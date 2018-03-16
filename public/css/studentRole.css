@@ -1,0 +1,39 @@
+		
+
+		/*通知面板标题*/
+		.notification
+		{
+			display: inline-block;
+			margin-left: 8px;
+		}
+
+		/*通知面板更多*/
+		.noticeMore
+		{
+			float: right;
+			clear: left;
+		}
+
+		/*各项通知*/
+		.noticeMore a
+		{
+			color: #000;
+			margin-right: 8px;
+		}
+
+		/*通知公告的时间显示*/
+		li span.time
+		{
+			float: right;
+			margin-right: 8px;
+		}
+
+
+		/*警示文字*/
+		.warningLetter
+		{
+			color: red;
+		}
+
+
+		

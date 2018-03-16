@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>宿舍黑板</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap-table.css">
+	<link rel="stylesheet" type="text/css" href="../public/css/common.css">
+	<link rel="stylesheet" type="text/css" href="../public/css/studentRole.css">
+
+
+</head>
+<body>
+
+	<!-- 导航及页头 -->
+	<div class="page-header navDiv">
+	  	<h1>宿舍黑板</h1>
+		<ul class="nav nav-tabs" role="tablist">
+		  <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+		  	data-toggle="tab">首页</a></li>
+		  <li role="presentation"><a href="#applyLodging" aria-controls="applyLodging" role="tab" data-toggle="tab">住宿申请</a></li>
+		  <li role="presentation"><a href="#applyReturn" aria-controls="applyReturn" role="tab" data-toggle="tab">退换宿申请</a></li>
+		  <li role="presentation"><a href="#fix" aria-controls="fix" role="tab" data-toggle="tab">报修</a></li>
+		  <li role="presentation"><a href="#myWork" aria-controls="myWork" role="tab" data-toggle="tab">业务进度</a></li>
+		</ul>
+	</div>
+
+	<!-- 标签页 -->
+	<div id="content" class="tab-content">
+		<!-- 通知公告标签页 -->
+		<div id="home" class="panel panel-default tab-pane active" role="tabpanel">
+		  <div class="panel-heading">
+		    <h4 class="panel-title notification">通知公告</h4>
+			<h4 class="panel-title noticeMore"><a href="#">更多>></a></h4>
+		  </div>
+		  <div class="panel-body">
+			<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+			  <!-- Indicators -->
+			  <ol class="carousel-indicators">
+			    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+			    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+			    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+			  </ol>
+
+			  <!-- Wrapper for slides -->
+			  <div class="carousel-inner" role="listbox">
+			    <div class="item active">
+			      <img src="../public/img/show1.jpg" alt="First Slide">
+			      <div class="carousel-caption">
+			        <h3>温馨提示</h3>
+			        <p>水电缴费通知</p>
+			      </div>
+			    </div>
+			    <div class="item">
+			      <img src="../public/img/show2.jpg" alt="Second Slide">
+			      <div class="carousel-caption">
+			        <h3>通知</h3>
+			        <p>近日需知</p>
+			      </div>
+			    </div>
+			    <div class="item">
+			      <img src="../public/img/show3.jpg" alt="Third Slide">
+			      <div class="carousel-caption">
+			        <h3>第三张</h3>
+			        <p>不知道该写什么暂且这样</p>
+			      </div>
+			    </div>
+			  </div>
+
+			  <!-- Controls -->
+			  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+			    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			    <span class="sr-only">Previous</span>
+			  </a>
+			  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+			    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			    <span class="sr-only">Next</span>
+			  </a>
+			</div> 
+			<br><br>
+		    <ul>
+				<li><a href="#">水电费缴费通知</a><span class="time">2018-1-2</span></li>
+				<li><a href="#">寒假留宿注意事项</a><span class="time">2018-1-2</span></li>
+				<li><a href="#">寒假停水通知</a><span class="time">2018-1-2</span></li>
+			</ul>
+		  </div>
+		</div>
+		<!-- 宿舍申请标签页 -->
+		<div id="applyLodging" class="tab-pane" role="tabpanel">
+			<div class="panel panel-default">
+			  <!-- Default panel contents -->
+			  <div class="panel-heading"><h4 class="panel-title">申请入住宿舍</h4></div>
+			  <div class="panel-body">
+			    <p>申请入住宿舍注意事项及需遵守细则</p>
+			  </div>
+
+			  <!-- Form -->
+			  <form class="form-horizontal" id="appLodForm">
+				<div class="form-group">
+					<label for="inputName" class="col-sm-2 control-label">*姓名</label>
+					<div class="col-sm-3">
+						<input type="text" name="inputName" id="inputName" class="form-control" placeholder="请输入姓名" required>
+					</div>
+					<label for="inputSID" class="col-sm-2 control-label">*学号</label>
+					<div class="col-sm-3">
+						<input type="text" name="inputSID" id="inputSID" class="form-control" placeholder="请输入学号" pattern="^[0-9]{11}$" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="selectCollege" class="col-sm-2 control-label">*学院</label>
+					<div class="col-sm-3">
+						<select class="form-control" id="selectCollege" required name="college">
+							<option value="">--请选择所在学院--</option>
+							<option value="it">信息学院</option>
+							<option value="finance">金融学院</option>
+							<option value="art">艺术学院</option>
+							<option value="humanities">人文学院</option>
+							<option value="mathNStat">数学与统计学院</option>
+							<option value="foreignLan">外国语学院</option>
+						</select>
+					</div>
+					<label for="inputGender" class="col-sm-2 control-label">*性别</label>
+					<div class="col-sm-3" id="inputGender">
+						<label class="radio-inline">
+		                    <input type="radio" name="inputGender" id="inlineRadio1" value="男" checked="true"> 男
+		                </label>
+		                <label class="radio-inline">
+		                    <input type="radio" name="inputGender" id="inlineRadio2" value="女"> 女
+		                </label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="selectLodging" class="col-sm-2 control-label">*申请入住宿舍</label>
+					<div class="col-sm-1">
+						<select class="form-control col-sm-2" id="selectLodging" name="lodging">
+							<option value="28">28栋</option>
+							<option value="29">29栋</option>
+							<option value="30">30栋</option>
+							<option value="32">32栋</option>
+						</select>
+					</div>
+					<label for="roomNum" class="control-label sr-only">宿舍号</label>
+					<div class="col-sm-2">
+						<input type="text" name="roomNum" id="roomNum" class="form-control" placeholder="具体宿舍号">			
+					</div>
+				</div>
+				<br><br>
+				<div class="form-group">
+					<div class="col-sm-4 col-sm-offset-5">
+						<button type="button" class="btn btn-primary" id="btnAppLod">提交申请</button>						
+					</div>
+				</div>
+			  </form>
+			</div>
+		</div>
+		<!-- 退换宿申请 -->
+		<div id="applyReturn" class="tab-pane" role="tabpanel">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">申请退换宿</h4>
+				</div>
+				<div class="panel-body">
+					<p>申请退宿/换宿需知</p>
+				</div>
+				<form>
+					
+				</form>
+			</div>
+		</div>
+		<!-- 报修 -->
+		<div id="fix" class="tab-pane" role="tabpanel">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">报修事项</h4>
+				</div>
+				<div class="panel-body">
+					<p>报修需知</p>
+				</div>
+				<form class="form-horizontal" id="fixForm">
+					<div class="form-group">
+						<label for="selectBuilding" class="col-sm-2 control-label">*宿舍楼</label>
+						<div class="col-sm-3">
+							<select class="form-control" id="selectBuilding" required name="building">
+								<option value="">--请选择宿舍楼--</option>
+								<option value="18">18栋</option>
+								<option value="19">19栋</option>
+								<option value="21">21栋</option>
+								<option value="23">23栋</option>
+								<option value="25">25栋</option>
+								<option value="28">28栋</option>
+								<option value="29">29栋</option>
+								<option value="30">30栋</option>
+								<option value="32">32栋</option>
+								<option value="2">化二</option>
+							</select>
+						</div>
+						<label for="roomNumber" class="col-sm-2 control-label">*房间号</label>
+						<div class="col-sm-3">
+							<input type="text" name="roomNumber" id="roomNumber" class="form-control" placeholder="具体宿舍号" required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="fixId" class="col-sm-2 control-label">*学号</label>
+						<div class="col-sm-3">
+							<input type="text" name="fixId" id="fixId" class="form-control" placeholder="请输入学号" required>
+						</div>
+						<label for="fixName" class="col-sm-2 control-label">姓名</label>
+						<div class="col-sm-3">
+							<input type="text" name="fixName" id="fixName" class="form-control" placeholder="请输入姓名">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="item" class="col-sm-2 control-label">报修项目</label>
+						<div class="col-sm-3">
+							<select class="form-control" id="item" name="item">
+								<option value="">--请选择项目--</option>
+								<option value="doorNWindow">门窗</option>
+								<option value="clothesline">晾衣杆</option>
+								<option value="furniture">家居（含床、桌椅）</option>
+								<option value="roof">屋顶</option>
+								<option value="wall">墙壁</option>
+								<option value="light">电灯</option>
+								<option value="fan">电风扇</option>
+								<option value="condition">空调</option>
+								<option value="washing">洗衣机</option>
+								<option value="other">其他</option>
+							</select>
+						</div>
+						<label for="phone" class="col-sm-2 control-label">*联系电话</label>
+						<div class="col-sm-3">
+							<input type="text" name="phone" id="phone" class="form-control" placeholder="请输入联系电话" required pattern="^1[34578]\d{9}$">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="details" class="col-sm-2 control-label">报修项目描述</label>
+						<div class="col-sm-4">
+							<textarea id="details" class="form-control" name="details"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="spareDay" class="col-sm-2 control-label">*在宿舍时间</label>
+						<div class="col-sm-4">
+							<select class="form-control" id="spareDay" required name="spareDay">
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-4 col-sm-offset-2">
+							<label class="radio-inline col-sm-6">
+			                    <input type="radio" name="spareTime" id="spareTime1" value="8:00-9:50" checked="true"> 8:00-9:50
+			                </label>
+			                <label class="radio-inline">
+			                    <input type="radio" name="spareTime" id="spareTime2" value="9:50-11:50"> 9:50-11:50
+			                </label>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-4 col-sm-offset-2">
+							<label class="radio-inline col-sm-6">
+			                    <input type="radio" name="spareTime" id="spareTime3" value="14:00-15:45"> 14:00-15:45
+			                </label>
+			                <label class="radio-inline">
+			                    <input type="radio" name="spareTime" id="spareTime4" value="15:45-18:00"> 15:45-18:00
+			                </label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="remark" class="col-sm-2 control-label">备注</label>
+						<div class="col-sm-4">
+							<textarea id="remark" name="remark" class="form-control" placeholder="建议多写几个时间段"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-4 col-sm-offset-5">
+							<button type="submit" class="btn btn-primary" id="btnFix">提交</button>	
+							<button type="reset" class="btn btn-primary" id="btnReset">重置</button>						
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- 我的申请/报修 -->
+		<div id="myWork" class="tab-pane" role="tabpanel">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">我的申请/报修业务</h4>
+				</div>
+				<div class="panel-body">
+					<p>我的申请/报修业务进度</p>
+					<table class="table" id="myProgress" name="myProgress">
+						<thead>
+							<tr>
+								<th data-formatter="runningFormatter">#</th>
+								<th>学号</th>
+								<th>姓名</th>
+								<th>宿舍楼</th>
+								<th>房间号</th>
+								<th>业务项目</th>
+								<th data-field="progress">进度</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>141511016141</td>
+								<td>cj</td>
+								<td>31</td>
+								<td>313</td>
+								<td>报修</td>
+								<td>已处理</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>141511016111</td>
+								<td>cc</td>
+								<td></td>
+								<td></td>
+								<td>申请入住</td>
+								<td>处理中</td>
+							</tr>
+						</tbody>
+						
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>		
+	
+	
+
+
+
+
+
+
+
+	<script src="../public/js/jquery-3.2.1.js"></script>
+	<script src="../public/js/bootstrap.min.js"></script>
+	<script src="../public/js/bootstrap-table.min.js"></script>
+	<script src="../public/js/studentRole.js"></script>
+</body>
+</html>

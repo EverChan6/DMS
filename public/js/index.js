@@ -59,6 +59,7 @@ $(function () {
                     loginBox.find('input').each(function () {
                         $(this).val('');
                     });
+                window.location.href = './studentRole.html';
                 }
             }
         })

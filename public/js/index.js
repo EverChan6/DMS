@@ -37,7 +37,7 @@ $(function () {
                         registerBox.find('input').each(function () {
                             $(this).val('');
                         });
-                    },4000)
+                    },1000)
                 }
             }
         })
@@ -59,7 +59,7 @@ $(function () {
                     loginBox.find('input').each(function () {
                         $(this).val('');
                     });
-                window.location.href = './studentRole.html';
+                window.location.href = './studentRole';
                 }
             }
         })

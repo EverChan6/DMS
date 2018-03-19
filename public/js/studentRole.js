@@ -1,4 +1,10 @@
 
+	// 轮播图
+	$('.carousel').carousel({
+	  pause: "false"
+	});
+
+
 
 	// 标签页切换
 	$(".navDiv li a").click(function(e)
@@ -8,10 +14,26 @@
 	});
 
 
-	// 轮播图
-	$('.carousel').carousel({
-	  pause: "false"
+	//点击具体通知
+	$(".notice").click(function(e)
+	{
+		var event = e || window.e;
+		var target = event.target || event.srcElement;
+		console.log(target);
+
+		//取得点击通知的标题
+		var title = target.innerText;
+		console.log(title);
+
+		//替换标签标题
+		$("#home .panel-heading").html("<h4 class='panel-title'><a href='#'><返回</a></h4>");
+
+		//替换标签内容
+		$("#home .panel-body").html("您点击了第几个通知");
+
+		
 	});
+	
 
 
  	// 提交申请入住宿舍表单
@@ -197,9 +219,9 @@
  	//业务进度表格
  	$("#myProgress").bootstrapTable(
  	{
- 		method: 'post',
+ 		method: 'get',
         contentType: "application/x-www-form-urlencoded",
-        // url: '/medicine/selectStock',
+        url: 'api/studentRole/myProgress',
         cache: false,						//是否使用缓存
         showColumns: true,                  //是否显示所有的列
         showRefresh: true,                  //是否显示刷新按钮

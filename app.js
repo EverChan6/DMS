@@ -55,10 +55,21 @@ app.get('/',function(req, res) {
     res.render('index.html');
 });
 
-app.get('/studentRole.html', function(req, res, next)
+
+// 学生角色
+app.get('/studentRole', function(req, res, next)
 {
-    res.render('studentRole.html');
-})
+    res.render('studentRole');
+});
+
+
+
+// 宿管角色
+app.get('/managerRole', function(req, res, next)
+{
+	res.render('managerRole');
+});
+
 
 // 根据不同功能划分模块app.use(path,router/function(){})
 app.use('/admin',require('./routers/admin'));

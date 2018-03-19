@@ -92,7 +92,7 @@ router.post('/user/login',function (req,res) {
     if(!/^[0-9]{11}$/.test(username))
     {
         responseData.code = 2;
-        responseData.message = "用户名格式应为11位数字"；
+        responseData.message = "用户名格式应为11位数字";
         res.json(responseData);
         return;
     }
@@ -124,10 +124,12 @@ router.post('/user/login',function (req,res) {
 
 
 
+
+
 // 申请
 router.post("/studentRole/appLodForm", function(req, res, next)
 {
-    console.log("successfullly accept data from 申请入宿.");
+    console.log("successfully accept data from 申请入宿.");
     console.log(req.body);
 
     // 保存申请表的信息到数据库中
@@ -153,7 +155,7 @@ router.post("/studentRole/appLodForm", function(req, res, next)
 //报修
 router.post("/studentRole/fixForm", function(req, res, next)
 {
-    console.log("successfullly accept data from 报修。");
+    console.log("successfully accept data from 报修。");
     console.log(req.body);
 
     //保存报修表的信息到数据库中
@@ -180,15 +182,34 @@ router.post("/studentRole/fixForm", function(req, res, next)
 //业务进度
 router.get("/studentRole/myProgress", function(req, res, next)
 {
-    console.log("render process table...");
-    var db = req.db;
-    var apply = db.get("applies");
-    apply.find({}, {}, function(e, docs)
+    var userInfo = JSON.parse(req.cookies.get('userInfo'));
+    console.log(userInfo);
+    console.log("rendering process table...");
+    Apply.findOne({sid: userInfo.username}, function(err, docs)
     {
-        console.log(docs);
-        res.render("studentRole/myProgress", {
+        if(!err)
+        {
+            // 如果是刚提交的数据，需刷新表格好像？
+            if(docs != "" && docs != null)
+            {
+                console.log(docs);
+                // 这里渲染表格，怎么渲染呢？把数据打包return回去给前端？
 
-        });
+
+            }
+            else if(docs == null)
+            {
+                console.log("inside docs == null...");
+                responseData.code = 2;
+                responseData.message = '没有您的操作记录';
+                res.json(responseData);
+                return "没有您的操作记录";
+            }
+        }
+        else
+        {
+            console.log("发生了某种错误："+err);
+        }
     });
 
     //取学号去数据库匹配，如果申请表有这个记录，就渲染到表格

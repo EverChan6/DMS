@@ -13,7 +13,7 @@
 <body>
 
 	<!-- 导航及页头 -->
-	<div class="page-header navDiv">
+	<div class="page-header navDiv"z>
 	  	<h1>宿舍黑板</h1>
 		<ul class="nav nav-tabs" role="tablist">
 		  <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
@@ -78,10 +78,10 @@
 			  </a>
 			</div> 
 			<br><br>
-		    <ul>
-				<li><a href="#">水电费缴费通知</a><span class="time">2018-1-2</span></li>
-				<li><a href="#">寒假留宿注意事项</a><span class="time">2018-1-2</span></li>
-				<li><a href="#">寒假停水通知</a><span class="time">2018-1-2</span></li>
+		    <ul class="notice">
+				<li><a href="#" id="notice1">水电费缴费通知</a><span class="time">2018-1-2</span></li>
+				<li><a href="#" id="notice2">寒假留宿注意事项</a><span class="time">2018-1-2</span></li>
+				<li><a href="#" id="notice3">寒假停水通知</a><span class="time">2018-1-2</span></li>
 			</ul>
 		  </div>
 		</div>
@@ -301,22 +301,11 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>1</td>
-								<td>141511016141</td>
-								<td>cj</td>
-								<td>31</td>
-								<td>313</td>
-								<td>报修</td>
-								<td>已处理</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>141511016111</td>
-								<td>cc</td>
-								<td></td>
-								<td></td>
-								<td>申请入住</td>
-								<td>处理中</td>
+								<td><%= locals.sid %></td>
+								<td><%= locals.name %></td>
+								<td><%= locals.building %></td>
+								<td><%= locals.room %></td>
+
 							</tr>
 						</tbody>
 						

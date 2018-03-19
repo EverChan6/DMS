@@ -13,6 +13,7 @@ var Cookies = require('cookies');
 // 创建app应用 => NodeJs
 var app = express().listen()._events.request;
 var opn = require('opn');
+var path = require('path');
 
 
 // 设置静态文件托管
@@ -20,11 +21,20 @@ var opn = require('opn');
 app.use('/public',express.static(__dirname + '/public') );
 // 创建应用模板
 // 第一个参数：模板引擎的名称，同时也是模板文件的后缀，第二个参数表示用于u解析处理模板内容的方法
-app.engine('html',swig.renderFile);
+// app.engine('html',swig.renderFile);
+app.engine('html', require('ejs').__express);
 // 设置模板文件存放的目录，第一个必须是views，第二个参数是目录
 app.set('views','./views');
 // 注册所使用的模板引擎，第一个参数必须是view engine，第二个参数和app.engine这个方法中定义的模板引擎的名称一致
 app.set('view engine','html');
+
+
+// // view engine setup
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'ejs');
+
+
+
 // 在开发过程中，需要取消模板缓存
 swig.setDefaults({cache:false});
 
@@ -52,7 +62,7 @@ app.get('/',function(req, res) {
     // res.send('<h1>欢迎光临我的博客！</h1>');
     // 第一个参数：表示模板文件，相对于view文件夹而言的index文件
     // 第二个参数:传递个模板使用的数据，如res.render('index.ejs',{title: '网页标题'})
-    res.render('index.html');
+    res.render('index');
 });
 
 

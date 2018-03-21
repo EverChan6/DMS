@@ -53,13 +53,30 @@ $(function () {
             },
             dataType:'json',
             success:function (result) {
+
+                var role = $("#Role input[name='Role']:checked").val();
+                console.log(role);
+                console.log(role == "管理员");
                 alert(result.message);
                 // 登录成功
+
+                if(role == "学生")
+                {
+                    console.log("角色是："+loginBox.find('[name="Role"]').val());
+                    window.location.href = './studentRole';
+                }
+                else if(role == "管理员")
+                {
+                    window.location.href = './managerRole';
+                }
+
                 if(result.code == 4){
                     loginBox.find('input').each(function () {
                         $(this).val('');
                     });
-                window.location.href = './studentRole';
+                    
+
+
                 }
             }
         })

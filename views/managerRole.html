@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>什么鬼</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap-table.css">
+	<link rel="stylesheet" type="text/css" href="../public/css/common.css">
+	<link rel="stylesheet" type="text/css" href="../public/css/managerRole.css">
+</head>
+<body>
+	<!-- 导航及页头 -->
+	<div class="page-header navDiv">
+	  	<h1>什么鬼</h1>
+		<ul class="nav nav-tabs" role="tablist">
+		  <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+		  	data-toggle="tab">首页</a></li>
+		  <li role="presentation"><a href="#publish" aria-controls="publish" role="tab" data-toggle="tab">发布通知</a></li>
+		  <li role="presentation"><a href="#visit" aria-controls="visit" role="tab" data-toggle="tab">来访登记</a></li>
+		  <li role="presentation"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">查询/统计</a></li>
+		  <li role="presentation"><a href="#addtion" aria-controls="addtion" role="tab" data-toggle="tab">还没想好</a></li>
+		</ul>
+	</div>
+
+	<!-- 标签页 -->
+	<div id="content" class="tab-content">
+		<!-- 首页 -->
+		<div id="home" class="panel panel-default tab-pane active" role="tabpanel">
+			<div class="panel-heading">
+				<h4 class="panel-title">首页</h4>
+			</div>
+			<div class="panel-body">
+				<p>something to read</p>
+			</div>
+			<form>
+				
+			</form>
+		</div>
+
+
+		<!-- 发布通知（标准做法） -->
+		<div id="publish" class="tab-pane" role="tabpanel">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">发布通知</h4>
+				</div>
+				<div class="panel-body">
+					<form class="form-horizontal" id="releaseForm">
+						<div class="form-group">
+							<label for="inputTitle" class="col-sm-2 control-label">
+								标题
+							</label>
+							<div class="col-sm-4">
+								<input type="text" name="inputTitle" id="inputTitle" class="form-control" placeholder="请输入标题" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="auther" class="col-sm-2 control-label">
+								作者
+							</label>
+							<div class="col-sm-4">
+								<input type="text" name="auther" id="auther" class="form-control" placeholder="请输入发布单位" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for=" contents" class="sr-only control-label">
+								通知内容
+							</label>
+							<div class="col-sm-offset-2 col-sm-8">
+								<textarea name="contents" id="contents" class="form-control" placeholder="请输入发布内容..." style="min-height: 250px;" required></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-2">
+								<button id="release" type="button" class="btn btn-default">发布</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				
+			</div>
+		</div>
+
+
+		<!-- 来访登记 -->
+		<div id="visit" class="tab-pane panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">来访登记</h4>
+			</div>
+			<div class="panel-body">
+				<p>visitor note</p>
+			</div>
+			<form>
+				
+			</form>
+		</div>
+
+
+		<!-- 查询/统计 -->
+		<div id="search" class="tab-pane panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">查询/统计</h4>
+			</div>
+			<div class="panel-body">
+				<p></p>
+			</div>
+			<form>
+				
+			</form>
+		</div>
+
+
+		<!-- 附加功能 -->
+		<div id="addtion" class="tab-pane panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">暂时还不知道该做什么</h4>
+			</div>
+			<div class="panel-body">
+				<p>好好想想吧</p>
+			</div>
+			<form>
+				
+			</form>
+		</div>
+
+	</div>
+
+
+	<script src="../public/js/jquery-3.2.1.js"></script>
+	<script src="../public/js/bootstrap.min.js"></script>
+	<script src="../public/js/bootstrap-table.min.js"></script>
+	<script src="../public/js/managerRole.js"></script>
+</body>
+</html>

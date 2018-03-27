@@ -60,9 +60,14 @@ router.post("/managerRole/release", function(req, res, next)
 		return;
 	});
 
-
-
 });
+
+
+
+//把来访登记记录存进数据库
+
+
+//从数据库调取数据（查询/统计)
 
 
 

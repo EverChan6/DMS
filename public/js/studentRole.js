@@ -68,6 +68,52 @@ $(".navDiv li:last-child a").click(function(){
 
 
 
+	//从数据库取出通知,此处渲染标题及时间
+	$.ajax(
+	{
+		method: "get",
+		url: "api/getNotice",
+		dataType: "json",
+		success: function(result)
+		{
+			//这里处理成功后渲染
+			console.log(result);
+			if(result.code == 4)
+			{
+				console.log(result.message);					//服务端返回的信息
+				//注意这是个全局变量
+				data = result.data;							//要渲染的数据（包括标题、发布单位、时间和内容
+				let $anotice = $(".notice");					//取得a标签，以渲染标题
+				// console.log($anotice);
+				let $span = $(".time");							//取得span标签，以渲染时间
+				// console.log($span);
+
+				//轮播图的h3和p
+				let $h3 = $(".carousel-caption h3");
+				// console.log($h3);
+				let $p = $(".carousel-caption p");
+				// console.log($p);
+
+				for(let i = 0; i < data.length; i ++)
+				{
+					// console.log($anotice[i].innerText);		//jQuery现在不支持.text()方法了？？？.html()又可以。
+					$anotice[i].innerText = data[i].title;		//通知的标题
+					$span[i].innerText = data[i].time;			//通知的发布时间
+
+					//轮播图的h3和p
+					$h3[i].innerText = data[i].title;
+					$p[i].innerText = data[i].time;
+				}//end-for
+			}//end-if
+
+		},
+		error: function(e)
+		{
+			console.log(e.status);
+		}
+	});
+
+
 
 
 
@@ -78,13 +124,16 @@ $(".navDiv li:last-child a").click(function(){
 	$(".notice").on("click", showNotice);
 	function showNotice(e)
 	{
+		//取得事件源
 		var event = e || window.e;
 		var target = event.target || event.srcElement;
-		console.log(target);
+		// console.log("target: "+target);
+
 
 		//取得点击通知的标题
+		// var title = target.text();
 		var title = target.innerText;
-		console.log(title);
+		console.log("title: "+title);
 
 		//先把原来的保存下来，以便恢复
 		var $home = $("#home");
@@ -94,11 +143,25 @@ $(".navDiv li:last-child a").click(function(){
 		var $preBody = $pb.html();		//原来的panel-body（HTML片段
 	
 
+		//取得具体通知的内容，放进html标签里
+		for(let i = 0; i < data.length; i ++)
+		{
+			if(title == data[i].title)
+			{
+				$("#showTitle").text(data[i].title);
+				$("#showContents").text(data[i].contents);
+				$("#showAuther").text(data[i].auther);
+				$("#showTime").text(data[i].time);
+			}
+		}
+		var $nh = $(".newHeading").html();						//渲染新的面板标题
+		var $nb = $("#showNotice").html();						//渲染新的面板内容：具体通知内容
+
 		//替换标签标题
-		$ph.html("<h4 class='panel-title'><a href='#' id='return'><返回</a></h4>");
+		$ph.html($nh);
 
 		//替换标签内容
-		$pb.html("您点击了第几个通知");
+		$pb.html($nb);
 
 		
 

@@ -36,4 +36,51 @@
 		}
 
 
-		
+		/*图片大小*/
+		div#carousel-example-generic
+		{
+			width: 595px;
+			height: 446px;
+		}
+
+
+		/*先隐藏包含显示通知全部内容的panel-body*/
+		.newHeading
+		{
+			display: none;
+		}
+
+		#showNotice
+		{
+			display: none;
+			text-align: center;
+		}
+
+		#showTitle
+		{
+			text-align: center;
+		}
+
+		#showBody
+		{
+			/*width: 750px;*/
+			width: 75%;
+			height: auto;
+			margin: 0 auto;
+		}
+
+		#showContents
+		{
+			/*text-align: center;*/
+		}
+
+		#showAuther
+		{
+			float: right;
+		}
+
+		#showTime
+		{
+			clear: right;
+			float: right;
+		}

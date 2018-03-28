@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>宿舍黑板</title>
+	<title>辣几</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap-table.css">
@@ -14,7 +14,7 @@
 
 	<!-- 导航及页头 -->
 	<div class="page-header navDiv"z>
-	  	<h1>宿舍黑板</h1>
+	  	<h1>辣鸡</h1>
 		<ul class="nav nav-tabs" role="tablist">
 		  <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
 		  	data-toggle="tab">首页</a></li>
@@ -78,13 +78,39 @@
 			  </a>
 			</div> 
 			<br><br>
-		    <ul class="notice">
-				<li><a href="#" id="notice1">水电费缴费通知</a><span class="time">2018-1-2</span></li>
-				<li><a href="#" id="notice2">寒假留宿注意事项</a><span class="time">2018-1-2</span></li>
-				<li><a href="#" id="notice3">寒假停水通知</a><span class="time">2018-1-2</span></li>
+		    <ul>
+				<li><a href="#" class="notice"></a><span class="time"></span></li>
+				<li><a href="#" class="notice"></a><span class="time"></span></li>
+				<li><a href="#" class="notice">寒假停水通知</a><span class="time">2018-1-2</span></li>
+				<li><a href="#" class="notice"></a><span class="time"></span></li>
+				<li><a href="#" class="notice"></a><span class="time"></span></li>
+
 			</ul>
 		  </div>
 		</div>
+
+
+		<!-- 显示具体通知的panel-body -->
+		<h4 class='panel-title newHeading'><a href='#' id='return'><返回</a></h4>
+		<div id="showNotice">
+			<div>
+				<h3 id="showTitle"></h3>
+			</div>
+			<div id="showBody">
+				<div>
+					<p id="showContents"></p>
+				</div>
+				<div>
+					<p id="showAuther"></p>
+				</div>
+				<div>
+					<p id="showTime"></p>
+				</div>
+			</div>	
+		</div>
+
+
+
 		<!-- 宿舍申请标签页 -->
 		<div id="applyLodging" class="tab-pane" role="tabpanel">
 			<div class="panel panel-default">
@@ -103,7 +129,7 @@
 					</div>
 					<label for="inputSID" class="col-sm-2 control-label">*学号</label>
 					<div class="col-sm-3">
-						<input type="text" name="inputSID" id="inputSID" class="form-control" placeholder="请输入学号" pattern="^[0-9]{11}$" required>
+						<input type="text" name="inputSID" id="inputSID" class="form-control" placeholder="请输入学号" pattern="^[0-9]{11}$" required autocomplete="foo">
 					</div>
 				</div>
 				<div class="form-group">
@@ -202,7 +228,7 @@
 					<div class="form-group">
 						<label for="fixId" class="col-sm-2 control-label">*学号</label>
 						<div class="col-sm-3">
-							<input type="text" name="fixId" id="fixId" class="form-control" placeholder="请输入学号" required>
+							<input type="text" name="fixId" id="fixId" class="form-control" placeholder="请输入学号" required autocomplete="foo">
 						</div>
 						<label for="fixName" class="col-sm-2 control-label">姓名</label>
 						<div class="col-sm-3">
@@ -228,7 +254,7 @@
 						</div>
 						<label for="phone" class="col-sm-2 control-label">*联系电话</label>
 						<div class="col-sm-3">
-							<input type="text" name="phone" id="phone" class="form-control" placeholder="请输入联系电话" required pattern="^1[34578]\d{9}$">
+							<input type="text" name="phone" id="phone" class="form-control" placeholder="请输入联系电话" required pattern="^1[34578]\d{9}$" autocomplete="tel-national">
 						</div>
 					</div>
 					<div class="form-group">
@@ -272,7 +298,7 @@
 					</div>
 					<div class="form-group">
 						<div class="col-sm-4 col-sm-offset-5">
-							<button type="submit" class="btn btn-primary" id="btnFix">提交</button>	
+							<button type="button" class="btn btn-primary" id="btnFix">提交</button>	
 							<button type="reset" class="btn btn-primary" id="btnReset">重置</button>						
 						</div>
 					</div>
@@ -287,27 +313,19 @@
 				</div>
 				<div class="panel-body">
 					<p>我的申请/报修业务进度</p>
-					<table class="table" id="myProgress" name="myProgress">
+					<table id="myProgress">
 						<thead>
 							<tr>
-								<th data-formatter="runningFormatter">#</th>
-								<th>学号</th>
-								<th>姓名</th>
-								<th>宿舍楼</th>
-								<th>房间号</th>
-								<th>业务项目</th>
+								<th data-formatter="runningFormatter" data-field="index">#</th>
+								<th data-field="id">学号</th>
+								<th data-field="name">姓名</th>
+								<th data-field="dormitory">宿舍楼</th>
+								<th data-field="room">房间号</th>
+								<th data-field="item">业务项目</th>
 								<th data-field="progress">进度</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td><%= locals.sid %></td>
-								<td><%= locals.name %></td>
-								<td><%= locals.building %></td>
-								<td><%= locals.room %></td>
-
-							</tr>
-						</tbody>
+						
 						
 					</table>
 				</div>
@@ -325,7 +343,7 @@
 
 	<script src="../public/js/jquery-3.2.1.js"></script>
 	<script src="../public/js/bootstrap.min.js"></script>
-	<script src="../public/js/bootstrap-table.min.js"></script>
+	<script src="../public/js/bootstrap-table.js"></script>
 	<script src="../public/js/studentRole.js"></script>
 </body>
 </html>

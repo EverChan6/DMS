@@ -13,57 +13,83 @@
 		$(this).tab("show");
 	});
 
-
+	initTable();
 
 // 暂且放过你，哼！
-$(".navDiv li:last-child a").click(function(){
-	$("#myProgress").bootstrapTable({
- 		// $.ajax(
- 		// {
-	 		method: 'get',
-	        url: 'api/studentRole/myProgress',
-	        dataType: 'json',
-	        contentType: "application/json; charset=utf-8",
+function initTable(){
+
+		$("#myProgress").bootstrapTable({
+			method: "post",
+	        url: "api/studentRole/myProgress",
+	        contentType: "application/x-www-form-urlencoded",
 	        cache: false,						//是否使用缓存
+	        pagination: true,					//启用分页
+	 		pageNumber: 1,						//初始化加载第一页，默认第一页
+	 		pageSize: 10,						//每页的记录行数
+	 		pageList: [10,20,50],				//可供选择的每页行数
+	 		sidePagination: "server",			//服务端分页
+	        queryParams: function(params){		//查询参数
+	        	var queryData = {};
+	        	//增加两个请求时向服务端传递的参数
+	        	queryData.limit = params.limit;
+	        	queryData.offset = params.offset;
+	        	return queryData;
+	        },			
 	        showColumns: true,                  //是否显示所有的列
 	        showRefresh: true,                  //是否显示刷新按钮
 	        showToggle:true,                    //是否显示详细视图和列表视图
-	 		rowStyle: rowStyles,
-	 		
- 			onLoadSuccess: function(result)
- 			{
- 				console.log("success rendering data.");
- 				//如果没有响应操作记录或者服务器内部错误
- 				if(result.code == 2)
- 				{
- 					console.log(result.message);
- 				}
- 				//取到数据，并成功渲染
- 				else if(result.code == 4)
- 				{
- 					console.log(result.message);
+	 		// rowStyle: rowStyles,				//行样式		
+	 		columns: [
+	 		{
+	 			field: "index",
+	 			title: "序号",
+	 			align: "center",
+	 			formatter: runningFormatter
+	 		},
+	 		{
+	 			field: "id",
+	 			title: "学号",
+	 			align: "center"
+	 		},
+	 		{
+	 			field: "name",
+	 			title: "姓名",
+	 			align: "center"
+	 		},
+	 		{
+	 			field: "dormitory",
+	 			title: "宿舍楼",
+	 			align: "center"
+	 		},
+	 		{
+	 			field: "room",
+	 			title: "房间号",
+	 			align: "center"
+	 		},
+	 		{
+	 			field: "item",
+	 			title: "业务项目",
+	 			align: "center"
+	 		},
+	 		{
+	 			field: "operation",
+	 			title: "操作",
+	 			align: "center"
+	 			// ,formatter: operateFormatter,
+	 			// events: window.operateEvents
+	 		}],
+	 		onLoadSuccess: function(result)
+	 		{
+	 			console.log("result: "+result);
+	 		},
+	 		onLoadError: function(err)
+	 		{
+	 			console.log("error: "+err);
+	 		}
+ 		});//end-bootstrapTable
 
- 					//最不济的方案就是这样子啦(在这里渲染数据)
- 					var $tbody = $("#myProgress tbody");
- 					if($tbody.children().first().val() == "")
- 					{
- 						$tbody.children().first().remove();
- 					}
- 					let tr = "<tr><td></td><td>"+result.data.id+"</td><td>"+result.data.name+"</td><td>"+result.data.dormitory
- 								+"</td><td>"+result.data.room+"</td><td></td><td></td></tr>";
- 					$tbody.append(tr);
- 				}
- 			},
- 			onLoadError: function(e)
- 			{
- 				console.log("some error occur: "+e.statusText);
- 			}
 
- 		});//end-ajax
-
-
-
- 	});//end-bootstrapTable
+}//end-initTable	
 
 
 
@@ -77,10 +103,10 @@ $(".navDiv li:last-child a").click(function(){
 		success: function(result)
 		{
 			//这里处理成功后渲染
-			console.log(result);
+			// console.log(result);
 			if(result.code == 4)
 			{
-				console.log(result.message);					//服务端返回的信息
+				// console.log(result.message);					//服务端返回的信息
 				//注意这是个全局变量
 				data = result.data;							//要渲染的数据（包括标题、发布单位、时间和内容
 				let $anotice = $(".notice");					//取得a标签，以渲染标题
@@ -94,15 +120,22 @@ $(".navDiv li:last-child a").click(function(){
 				let $p = $(".carousel-caption p");
 				// console.log($p);
 
+				//将数组反序（因为要先显示最新的
+				data.reverse();
+
 				for(let i = 0; i < data.length; i ++)
 				{
-					// console.log($anotice[i].innerText);		//jQuery现在不支持.text()方法了？？？.html()又可以。
+					// console.log($anotice[i].innerText);		//jQuery .text()方法前面一定是个dom对象才能用。
 					$anotice[i].innerText = data[i].title;		//通知的标题
 					$span[i].innerText = data[i].time;			//通知的发布时间
 
 					//轮播图的h3和p
-					$h3[i].innerText = data[i].title;
-					$p[i].innerText = data[i].time;
+					if(i < 3)			//因为轮播图值显示3张
+					{
+						$h3[i].innerText = data[i].title;
+						$p[i].innerText = data[i].time;
+					}
+					
 				}//end-for
 			}//end-if
 

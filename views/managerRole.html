@@ -102,7 +102,57 @@
 				<h4 class="panel-title">查询/统计</h4>
 			</div>
 			<div class="panel-body">
-				<p></p>
+				<div class="searchConditions">
+					<form id="frmConditions" class="form-inline">
+						<div class="form-group col-sm-3">
+							<label for="id">学号</label>
+							<input type="text" name="id" id="id" class="form-control">
+						</div>
+						<div class="form-group col-sm-3">
+							<label for="name">姓名</label>
+							<input type="text" name="name" id="name" class="form-control">
+						</div>
+						<div class="form-group col-sm-3">
+							<label for="sex">性别</label>
+							<input type="text" name="sex" id="sex" class="form-control" autocomplete="foo">
+						</div>
+						<div class="form-group col-sm-3">
+							<label for="college">学院</label>
+							<select name="college" id="college" class="form-control">
+								<option value="">---请选择学院---</option>
+							</select>
+						</div>
+						<div class="form-group col-sm-3">
+							<label for="building">楼栋</label>
+							<select name="building" id="building" class="form-control">
+								<option value="">---请选择宿舍楼号---</option>
+							</select>
+						</div>
+						<div class="form-group col-sm-3">
+							<label for="room">房间</label>
+							<input type="text" name="room" id="room" class="form-control">
+						</div>
+						<button type="button" class="btn btn-primary" id="query">查询</button>
+					</form>
+				</div>
+				<div>
+					<table id="searchTable">
+						<thead>
+							<tr>
+								<th data-field="index" data-formatter="runningFormmater">序号</th>
+								<th data-field="id">学号</th>
+								<th data-field="name">姓名</th>
+								<th data-field="sex">性别</th>
+								<th data-field="college">学院</th>
+								<th data-field="building">宿舍楼</th>
+								<th data-field="room">房间号</th>
+								<th data-field="operations">操作</th>
+							</tr>
+						</thead>
+						
+					</table>
+				</div>
+				
 			</div>
 			<form>
 				
@@ -128,7 +178,7 @@
 
 	<script src="../public/js/jquery-3.2.1.js"></script>
 	<script src="../public/js/bootstrap.min.js"></script>
-	<script src="../public/js/bootstrap-table.min.js"></script>
+	<script src="../public/js/bootstrap-table.js"></script>
 	<script src="../public/js/managerRole.js"></script>
 </body>
 </html>

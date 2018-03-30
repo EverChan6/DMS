@@ -17,8 +17,6 @@
 	//发布通知事件处理程序
 	function handler()
 	{
-		
-
 		//检查数据合法性
 		var title = $("#inputTitle");
 		var auther = $("#auther");
@@ -89,11 +87,28 @@
 				title.val("");
 				auther.val("");
 				contents.val("");
-			},
+
+				//如有警告，去除警告文字
+				if(title.parent().children("span"))
+				{
+					title.parent().children("span").remove();
+				}
+				if(auther.parent().children("span"))
+				{
+					auther.parent().children("span").remove();
+				}
+				if(contents.parent().children("span"))
+				{
+					contents.parent().children("span").remove();
+				}
+
+
+
+			},//end-success
 			error: function(e)
 			{
 				console.log(e.readyState+"/"+e.status+"/");
-			}
+			}//end-error
 		});
 
 
@@ -102,6 +117,69 @@
 	}
 
 
+
+
+	$("#searchTable").bootstrapTable({
+		method: "post",
+		url: "/search",
+		contentType: "application/x-www-form-urlencoded",
+		cache: false,
+		pagination: true,
+		pageSize: 10,
+		pageNumber: 1,
+		pageList: [10,20,50,100,200],
+		sidePagination: "server",
+		queryParams: queryParam,
+		// rowStyle: rowStyles,
+		showColumns: true,
+		showRefresh: true,
+		showToggle: true,
+		onLoadSuccess: function(result)
+		{
+			console.log("load successfully");
+		},
+		onLoadError: function(e)
+		{
+			console.log("load failed");
+			console.log(e);
+		}
+	});//end-bootstrapTable
+
+
+
+	//点击查询
+	$("#query").click(function()
+	{
+		//检查数据合法性？
+
+		//刷新表格
+		$("#searchTable").bootstrapTable(("refresh"));
+	});
+
+	//打包查询条件
+	function queryParam(params)
+	{
+		//序列化表单数据
+		var queryData = processData("frmConditions");
+		console.log(queryData);
+
+		//增加两个请求时向服务端传递的参数
+		queryData.limit = params.limit;
+		queryData.offset = params.offset;
+
+		return queryData;
+	}
+
+
+
+
+
+
+
+	function runningFormatter(value, row, index) 
+	{
+	    return index;
+	}
 
 
 	//工具函数：处理表单数据以转成JSON格式字符串

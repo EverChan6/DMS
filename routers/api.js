@@ -7,6 +7,7 @@ mongoose.Promise = global.Promise;
 var User = require('../Models/User');
 var Apply = require("../Models/Apply");
 var Fix = require("../Models/Fix");
+var Release = require("../Models/Release");
 
 // 统一返回格式
 var responseData;
@@ -82,6 +83,7 @@ router.post('/user/login',function (req,res) {
     // console.log(req.body);
     var username = req.body.username;
     var password = req.body.password;
+    var role = req.body.role;
 
     if(password == ''|| username==''){
         responseData.code = 2;
@@ -99,7 +101,8 @@ router.post('/user/login',function (req,res) {
     // 判断用户名是否已经注册
     User.findOne({
         username:username,
-        password:password
+        password:password,
+        role: role
     },function (err,doc) {
         if(doc){
             responseData.code = 4;
@@ -126,28 +129,86 @@ router.post('/user/login',function (req,res) {
 
 
 
+//取通知
+router.get("/getNotice", function(req, res, next)
+{
+    // console.log("收到前端发来的取通知请求。");
+    Release.find({}, null, {limit: 5}, function(err, docs)
+    {
+        if(docs)
+        {
+            // console.log("已有的通知：")
+            // console.log(docs);
+
+            responseData.code = 4;
+            responseData.message = "成功取到通知";
+            responseData.data = docs;   //注意这里是一个对象数组，因为不止一条数据（一个对象
+            res.json(responseData);
+            return;
+        }
+        else if(err)
+        {
+            console.log(err);
+        }
+    });
+});
+
+
+
+
+
+
 // 申请
 router.post("/studentRole/appLodForm", function(req, res, next)
 {
     console.log("successfully accept data from 申请入宿.");
     console.log(req.body);
+    var name = req.body.inputName,
+        id = req.body.inputSID,
+        college = req.body.college,
+        gender = req.body.inputGender,
+        dormitory = req.body.lodging,
+        room = req.body.roomNum;
 
-    // 保存申请表的信息到数据库中
-    var apply = new Apply({
-       //姓名
-        name: req.body.inputName,
-        // 学号
-        sid: req.body.inputSID,
-        // 学院
-        college: req.body.college,
-        // 性别
-        gender: req.body.inputGender,
-        // 宿舍楼号
-        dormitory: req.body.lodging,
-        // 房间号
-        room: req.body.roomNum
+     // 判断用是否存在此申请记录
+    Apply.findOne({
+        sid:id
+    },function (err,doc) {
+        if(doc){
+            responseData.code = 2;
+            responseData.message = '重复申请（请想想您之前是不是干过这事';
+            res.json(responseData);
+            return
+        }
+
+        // 保存申请表的信息到数据库中
+        var apply = new Apply({
+           //姓名
+            name: name,
+            // 学号
+            sid: id,
+            // 学院
+            college: college,
+            // 性别
+            gender: gender,
+            // 宿舍楼号
+            dormitory: dormitory,
+            // 房间号
+            room: room
+        });
+        apply.save();
+
+        responseData.code = 4;
+        responseData.message = '申请成功！';
+        res.json(responseData);
+        return
     });
-    apply.save();
+
+
+
+
+
+    
 });
 
 
@@ -158,62 +219,146 @@ router.post("/studentRole/fixForm", function(req, res, next)
     console.log("successfully accept data from 报修。");
     console.log(req.body);
 
-    //保存报修表的信息到数据库中
-    var fix = new Fix({
-        //宿舍楼
-        building: req.body.building,
-        details: req.body.details,
-        id: req.body.fixId,
-        name: req.body.fixName,
-        item: req.body.item,
-        phone: req.body.phone,
-        remark: req.body.remark,
-        room: req.body.roomNumber,
-        spareDay: req.body.spareDay,
-        spareTime: req.body.spareTime
-    });
-    fix.save();
-});
+    var building = req.body.building,
+        details = req.body.details,
+        id = req.body.fixId,
+        name = req.body.fixName,
+        item = req.body.item,
+        phone = req.body.phone,
+        remark = req.body.remark,
+        room = req.body.roomNumber,
+        spareDay = req.body.spareDay,
+        spareTime = req.body.spareTime;
+
+    Fix.findOne(
+    {
+        id: id,
+        item: item,
+        spareDay: spareDay,
+        spareTime: spareTime
+    }, function(err, doc)
+    {
+        if(doc)
+        {
+            responseData.code = 2;
+            responseData.message = "重复报修！您可能此前已经报修过了。";
+            res.json(responseData);
+            return;
+        }//end-if
+        else
+        {
+            //保存报修表的信息到数据库中
+            var fix = new Fix({
+                //宿舍楼
+                building: building,
+                details: details,
+                id: id,
+                name: name,
+                item: item,
+                phone: phone,
+                remark: remark,
+                room: room,
+                spareDay: spareDay,
+                spareTime: spareTime
+            });
+            fix.save();
+
+            responseData.code = 4;
+            responseData.message = "报修成功！";
+            res.json(responseData);
+            return;
+        }//end-else
+
+    });//end-findOne
+
+   
+});//end-报修
 
 
 
 
 
 //业务进度
-router.get("/studentRole/myProgress", function(req, res, next)
+router.post("/studentRole/myProgress", function(req, res, next)
 {
+    //取得当前用户，以便从数据库查看是否有该用户的操作记录
     var userInfo = JSON.parse(req.cookies.get('userInfo'));
-    console.log(userInfo);
-    console.log("rendering process table...");
+    //!!!new
+    var result = {"total": "", "rows": []};    //存储返回给前端的数据
+
+    //取学号去数据库匹配申请记录
     Apply.findOne({sid: userInfo.username}, function(err, docs)
     {
         if(!err)
         {
-            // 如果是刚提交的数据，需刷新表格好像？
             if(docs != "" && docs != null)
             {
+                console.log("数据库匹配到的申请记录：（业务进度）");
                 console.log(docs);
-                // 这里渲染表格，怎么渲染呢？把数据打包return回去给前端？
+                //!!!new
+                result.rows.push({id: docs.sid, name: docs.name, dormitory: docs.dormitory, room: docs.room, item: "申请入住"});
+                result.total = result.rows.length;
 
-
-            }
+            }//end-if
             else if(docs == null)
             {
-                console.log("inside docs == null...");
                 responseData.code = 2;
-                responseData.message = '没有您的操作记录';
+                responseData.message = '没有该用户的操作记录';
                 res.json(responseData);
-                return "没有您的操作记录";
-            }
-        }
+                return;
+            }//end-elseif
+
+        }//end-if(!err)
         else
         {
-            console.log("发生了某种错误："+err);
-        }
-    });
+            responseData.code = 5;
+            responseData.message = "内部服务器错误";
+            res.json(responseData);
+            return;
+        }//end-else
+    });//end-Apply.findOne
 
-    //取学号去数据库匹配，如果申请表有这个记录，就渲染到表格
-});
+    //取学号去数据库匹配报修记录
+    Fix.find({id: userInfo.username}, function(err, doc)
+    {
+        if(!err)
+        {
+            if(doc != "" && doc != null)
+            {
+                console.log("数据库匹配到的报修记录：（业务进度） ");
+                console.log(doc);
+                for(let i = 0; i < doc.length; i ++)
+                {
+                    //原本是 responseData.data.push
+                    result.rows.push({id: doc[i].id, name: doc[i].name, dormitory: doc[i].building, room: doc[i].room, item: "报修" });
+                }
+                //更新total的值
+                result.total = result.rows.length;
+                res.json(result);
+
+                //!!!old
+                // res.json(responseData);
+                return;
+            }
+            else if(doc == null)
+            {
+                responseData.code = 2;
+                responseData.message = "没有该用户的报修记录";
+                res.json(responseData);
+                return;
+            }
+        }
+        else if(err)
+        {
+            responseData.code = 5;
+            responseData.message = "内部服务器错误";
+            res.json(responseData);
+            return
+        }
+    });//end-Fix.find
+
+
+});//end-业务进度
 
 
 // 返回数据

@@ -66,6 +66,27 @@ router.post("/managerRole/release", function(req, res, next)
 
 
 //把来访登记记录存进数据库
+router.post("/record", function(req, res, next)
+{
+	console.log("即将处理登记来访信息");
+	console.log(req.body);
+	//保存到数据库中
+	var visit = new Visit(
+	{
+		name: req.body.name,
+		sex: req.body.sex,
+		reason: req.body.reason,
+		date: req.body.date,
+		contact: req.body.contact
+	});
+	visit.save();
+	res.json({message: "成功登记来访信息"});
+	return;
+
+});
+
+
+//查询来访记录
 router.post("/visit", function(req, res, next)
 {
 	console.log("收到查询来访信息请求");
@@ -73,16 +94,16 @@ router.post("/visit", function(req, res, next)
 	let param = {
 		name: req.body.visitName,
 		sex: req.body.visitSex,
-		date: req.body.date
+		date: req.body.visitDate
 	};
 	//筛选查询条件
 	for(let key in param)
 	{
 		if(param[key] == "")
 			delete param[key];
-		delete param.limit;
-		delete param.offset;
 	}
+	delete param.limit;
+	delete param.offset;
 	console.log(param);
 
 	//调取信息

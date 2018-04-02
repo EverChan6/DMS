@@ -72,7 +72,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-2">
-								<button id="release" type="button" class="btn btn-default">发布</button>
+								<button id="release" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> 发布</button>
 							</div>
 						</div>
 					</form>
@@ -99,17 +99,81 @@
 							<input type="text" name="visitSex" id="visitSex" class="form-control" autocomplete="foo">
 						</div>
 						<div class="form-group col-sm-3">
-							<label for="date">来访日期</label>
-							<input type="date" name="date" id="date" class="form-control">
+							<label for="visitDate">来访日期</label>
+							<input type="date" name="visitDate" id="visitDate" class="form-control">
+						</div>
+						<div class="form-group col-sm-3">
+							<button type="button" class="btn btn-primary" id="find">
+								<span class="glyphicon glyphicon-search"></span> 查询
+							</button>
+							<button type="reset" class="btn btn-warning" id="clean">
+								<span class="glyphicon glyphicon-trash"></span> 重置
+							</button>
 						</div>
 						
-						<button type="button" class="btn btn-primary" id="record">登记</button>
-						<button type="button" class="btn btn-primary" id="find">查询</button>
-						<button type="reset" class="btn btn-warning" id="clean">重置</button>
 					</form>
 				</div>
 				<div>
 					<table id="visitTable"></table>
+					<div id="toolbar">
+						<button type="button" class="btn btn-primary" id="record">
+							<span class="glyphicon glyphicon-pencil"></span> 登记
+						</button>
+					</div>
+					<!-- 登记模态窗 -->
+					<div class="modal fade" id="recordModal" tabindex="-1" role="dialog" aria-labelledby="recordInfo" aria-hidden="true">
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+					            <div class="modal-header">
+					                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					                <h4 class="modal-title" id="recordInfo">登记来访人员信息</h4>
+					            </div>
+					            <div class="modal-body">
+					            	<form class="form-horizontal" id="frmRecord">
+					            		<div class="form-group">
+					            			<label for="name" class="col-sm-2 col-sm-offset-3 control-label">姓名</label>
+					            			<div class="col-sm-4">
+					            				<input type="text" name="name" id="name" class="form-control" required>
+					            			</div>
+					            		</div>
+					            		<div class="form-group">
+					            			<label for="sex" class="col-sm-2 col-sm-offset-3 control-label">性别</label>
+					            			<div class="col-sm-4">
+					            				<label class="radio-inline">
+				                                    <input type="radio" name="sex" id="recordMale" value="男" checked> 男
+				                                </label>
+				                                <label class="radio-inline">
+				                                    <input type="radio" name="sex" id="recordFemale" value="女"> 女
+				                                </label>
+					            			</div>
+					            		</div>
+					            		<div class="form-group">
+					            			<label for="reason" class="col-sm-2 col-sm-offset-3 control-label">来访事由</label>
+					            			<div class="col-sm-4">
+					            				<textarea name="reason" id="reason" class="form-control"></textarea>
+					            			</div>
+					            		</div>
+					            		<div class="form-group">
+					            			<label for="date" class="col-sm-2 col-sm-offset-3 control-label">来访时间</label>
+					            			<div class="col-sm-4">
+					            				<input type="date" name="date" id="date" class="form-control" required>
+					            			</div>
+					            		</div>
+					            		<div class="form-group">
+					            			<label for="contact" class="col-sm-2 col-sm-offset-3 control-label">联系方式</label>
+					            			<div class="col-sm-4">
+					            				<input type="tel" name="contact" id="contact" class="form-control">
+					            			</div>
+					            		</div>
+					            	</form>
+					            </div>
+					            <div class="modal-footer">
+					                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					                <button id="record_ok" type="button" class="btn btn-primary">提交</button>
+					            </div>
+					        </div><!-- /.modal-content -->
+					    </div><!-- /.modal -->
+					</div>
 				</div>
 			</div>
 		</div>
@@ -173,9 +237,9 @@
 							<label for="room">房间</label>
 							<input type="text" name="room" id="room" class="form-control">
 						</div>
-						<button type="button" class="btn btn-primary" id="query">查询</button>
-						<button type="button" class="btn btn-primary" id="add">增加</button>
-						<button type="reset" class="btn btn-warning" id="reset">重置</button>
+						<button type="button" class="btn btn-primary" id="query"><span class="glyphicon glyphicon-search"></span> 查询</button>
+						<button type="button" class="btn btn-primary" id="add"><span class="glyphicon glyphicon-plus"></span> 增加</button>
+						<button type="reset" class="btn btn-warning" id="reset"><span class="glyphicon glyphicon-trash"></span> 重置</button>
 					</form>
 				</div>
 				<div>

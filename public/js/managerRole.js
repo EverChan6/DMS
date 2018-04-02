@@ -99,6 +99,7 @@
 		showColumns: true,
 		showRefresh: true,
 		showToggle: true,
+		toolbar: "#toolbar",
 		columns: [
 		{
 			align: "center",
@@ -155,7 +156,80 @@
 		return queryData;
 	}
 	
+	//来访登记-点击登记
+	$("#record").click(function()
+	{
+		$("#recordModal").modal("show");
+		$("#recordModal").on("shown.bs.modal", function()
+		{
+			$("#name").focus();
+		});
 
+		//提交登记
+		$("#record_ok").click(function()
+		{
+			let name = $("#name"),
+				sex = $("#sex"),
+				reason = $("#reason"),
+				date = $("#date"),
+				contact = $("#contact");
+			//检查数据合法性
+			if(name.val() == "")
+			{
+				let span = "<span class='warningLetter'>必填</span>";
+				check(name, span);
+				return;
+			}
+			if(date.val() == "")
+			{
+				let span = "<span class='warningLetter'>必填</span>";
+				check(date, span);
+				return;
+			}
+			if(!/^1[34578]\d{9}$/.test(contact.val()))
+			{
+				let span = "<span class='warningLetter'>手机号码格式不对</span>";
+				check(contact, span);
+				return;
+			}
+			//关闭模态窗
+			$("#recordModal").modal("hide");
+			//打包数据
+			let recordData = processData("frmRecord");
+			//把登记存进数据库
+			$.ajax(
+			{
+				type: "post",
+				url: "/record",
+				data: recordData,
+				dataType: "json",
+				success: function(result)
+				{
+					console.log(result.message);
+					//清空输入
+					name.val("");
+					sex.val("");
+					reason.val("");
+					date.val("");
+					contact.val("");
+					//清空警示
+					checkWarn(name);
+					checkWarn(date);
+					checkWarn(contact);
+				},
+				error: function(error)
+				{
+					console.log(error);
+				}
+			});
+		});
+	});
+
+	//来访登记-点击查询
+	$("#find").click(function()
+	{
+		$("#visitTable").bootstrapTable(("refresh"));
+	});
 
 	//查询信息表格
 	$("#searchTable").bootstrapTable({

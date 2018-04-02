@@ -1,0 +1,20 @@
+
+
+
+
+
+		/*警示文字*/
+		.warningLetter
+		{
+			color: red;
+		}
+
+		#frmConditions div
+		{
+			margin-bottom: 15px;
+		}
+
+		#frmVisit div
+		{
+			margin-bottom: 15px;
+		}

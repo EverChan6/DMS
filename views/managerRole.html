@@ -17,8 +17,8 @@
 		  	data-toggle="tab">首页</a></li>
 		  <li role="presentation"><a href="#publish" aria-controls="publish" role="tab" data-toggle="tab">发布通知</a></li>
 		  <li role="presentation"><a href="#visit" aria-controls="visit" role="tab" data-toggle="tab">来访登记</a></li>
-		  <li role="presentation"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">查询/统计</a></li>
-		  <li role="presentation"><a href="#addtion" aria-controls="addtion" role="tab" data-toggle="tab">还没想好</a></li>
+		  <li role="presentation"><a href="#search" aria-controls="search" role="tab" data-toggle="tab">查询信息</a></li>
+		  <li role="presentation"><a href="#addtion" aria-controls="addtion" role="tab" data-toggle="tab">查看报修</a></li>
 		</ul>
 	</div>
 
@@ -88,18 +88,37 @@
 				<h4 class="panel-title">来访登记</h4>
 			</div>
 			<div class="panel-body">
-				<p>visitor note</p>
+				<div class="visitInfo">
+					<form id="frmVisit" class="form-inline">
+						<div class="form-group col-sm-3">
+							<label for="visitName">姓名</label>
+							<input type="text" name="visitName" id="visitName" class="form-control">
+						</div>
+						<div class="form-group col-sm-3">
+							<label for="visitSex">性别</label>
+							<input type="text" name="visitSex" id="visitSex" class="form-control" autocomplete="foo">
+						</div>
+						<div class="form-group col-sm-3">
+							<label for="date">来访日期</label>
+							<input type="date" name="date" id="date" class="form-control">
+						</div>
+						
+						<button type="button" class="btn btn-primary" id="record">登记</button>
+						<button type="button" class="btn btn-primary" id="find">查询</button>
+						<button type="reset" class="btn btn-warning" id="clean">重置</button>
+					</form>
+				</div>
+				<div>
+					<table id="visitTable"></table>
+				</div>
 			</div>
-			<form>
-				
-			</form>
 		</div>
 
 
-		<!-- 查询/统计 -->
+		<!-- 查询信息 -->
 		<div id="search" class="tab-pane panel panel-default">
 			<div class="panel-heading">
-				<h4 class="panel-title">查询/统计</h4>
+				<h4 class="panel-title">查询信息</h4>
 			</div>
 			<div class="panel-body">
 				<div class="searchConditions">
@@ -120,12 +139,34 @@
 							<label for="college">学院</label>
 							<select name="college" id="college" class="form-control">
 								<option value="">---请选择学院---</option>
+								<option value="信息学院">信息学院</option>
+								<option value="数学与统计学院">数学与统计学院</option>
+								<option value="金融学院">金融学院</option>
+								<option value="艺术学院">艺术学院</option>
+								<option value="外国语学院">外国语学院</option>
+								<option value="人文学院">人文学院</option>
+								<option value="地理与旅游学院">地理与旅游学院</option>
+								<option value="继续教育学院">继续教育学院</option>
+
 							</select>
 						</div>
 						<div class="form-group col-sm-3">
 							<label for="building">楼栋</label>
 							<select name="building" id="building" class="form-control">
 								<option value="">---请选择宿舍楼号---</option>
+								<option value="17栋">17栋</option>
+								<option value="18栋">18栋</option>
+								<option value="19栋">19栋</option>
+								<option value="21栋">21栋</option>
+								<option value="22栋">22栋</option>
+								<option value="23栋">23栋</option>
+								<option value="25栋">25栋</option>
+								<option value="28栋">28栋</option>
+								<option value="29栋">29栋</option>
+								<option value="30栋">30栋</option>
+								<option value="31栋">31栋</option>
+								<option value="化一">化一</option>
+								<option value="化二">化二</option>
 							</select>
 						</div>
 						<div class="form-group col-sm-3">
@@ -133,32 +174,100 @@
 							<input type="text" name="room" id="room" class="form-control">
 						</div>
 						<button type="button" class="btn btn-primary" id="query">查询</button>
+						<button type="button" class="btn btn-primary" id="add">增加</button>
+						<button type="reset" class="btn btn-warning" id="reset">重置</button>
 					</form>
 				</div>
 				<div>
-					<table id="searchTable">
-						<thead>
-							<tr>
-								<th data-field="index" data-formatter="runningFormmater">序号</th>
-								<th data-field="id">学号</th>
-								<th data-field="name">姓名</th>
-								<th data-field="sex">性别</th>
-								<th data-field="college">学院</th>
-								<th data-field="building">宿舍楼</th>
-								<th data-field="room">房间号</th>
-								<th data-field="operations">操作</th>
-							</tr>
-						</thead>
-						
-					</table>
+					<table id="searchTable"></table>
+					<!-- 修改 模态窗 -->
+					<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editInfo" aria-hidden="true">
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+					            <div class="modal-header">
+					                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					                <h4 class="modal-title" id="editInfo">修改入住学生信息</h4>
+					            </div>
+					            <div class="modal-body">
+					            	<form class="form-horizontal" id="frmEdit">
+					            		<div class="form-group">
+					            			<label for="editId" class="col-sm-2 col-sm-offset-3 control-label">学号</label>
+					            			<div class="col-sm-4">
+					            				<input type="text" name="editId" id="editId" class="form-control" readonly>
+					            			</div>
+					            		</div>
+					            		<div class="form-group">
+					            			<label for="editName" class="col-sm-2 col-sm-offset-3 control-label">姓名</label>
+					            			<div class="col-sm-4">
+					            				<input type="text" name="editName" id="editName" class="form-control">
+					            			</div>
+					            		</div>
+					            		<div class="form-group">
+					            			<label for="editSex" class="col-sm-2 col-sm-offset-3 control-label">性别</label>
+					            			<div class="col-sm-4">
+					            				<label class="radio-inline">
+				                                    <input type="radio" name="editSex" id="editMale" value="男"> 男
+				                                </label>
+				                                <label class="radio-inline">
+				                                    <input type="radio" name="editSex" id="editFemale" value="女"> 女
+				                                </label>
+					            			</div>
+					            		</div>
+					            		<div class="form-group">
+					            			<label for="editCollege" class="col-sm-2 col-sm-offset-3 control-label">学院</label>
+					            			<div class="col-sm-4">
+					            				<select name="editCollege" id="editCollege" class="form-control">
+													<option value="信息学院">信息学院</option>
+													<option value="数学与统计学院">数学与统计学院</option>
+													<option value="金融学院">金融学院</option>
+													<option value="艺术学院">艺术学院</option>
+													<option value="外国语学院">外国语学院</option>
+													<option value="人文学院">人文学院</option>
+													<option value="地理与旅游学院">地理与旅游学院</option>
+													<option value="继续教育学院">继续教育学院</option>
+												</select>
+					            			</div>
+					            		</div>
+					            		<div class="form-group">
+					            			<label for="editBuilding" class="col-sm-2 col-sm-offset-3 control-label">楼栋</label>
+					            			<div class="col-sm-4">
+					            				<select name="editBuilding" id="editBuilding" class="form-control">
+													<option value="17栋">17栋</option>
+													<option value="18栋">18栋</option>
+													<option value="19栋">19栋</option>
+													<option value="21栋">21栋</option>
+													<option value="22栋">22栋</option>
+													<option value="23栋">23栋</option>
+													<option value="25栋">25栋</option>
+													<option value="28栋">28栋</option>
+													<option value="29栋">29栋</option>
+													<option value="30栋">30栋</option>
+													<option value="31栋">31栋</option>
+													<option value="化一">化一</option>
+													<option value="化二">化二</option>
+												</select>
+					            			</div>
+					            		</div>
+					            		<div class="form-group">
+					            			<label for="editRoom" class="col-sm-2 col-sm-offset-3 control-label">房间号</label>
+					            			<div class="col-sm-4">
+					            				<input type="text" name="editRoom" id="editRoom" class="form-control">
+					            			</div>
+					            		</div>
+					            	</form>
+					            </div>
+					            <div class="modal-footer">
+					                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					                <button id="edit_ok" type="button" class="btn btn-primary">提交</button>
+					            </div>
+					        </div><!-- /.modal-content -->
+					    </div><!-- /.modal -->
+					</div>
 				</div>
 				
 			</div>
-			<form>
-				
-			</form>
 		</div>
-
+		
 
 		<!-- 附加功能 -->
 		<div id="addtion" class="tab-pane panel panel-default">
@@ -174,6 +283,13 @@
 		</div>
 
 	</div>
+
+
+
+
+
+
+
 
 
 	<script src="../public/js/jquery-3.2.1.js"></script>

@@ -18,43 +18,25 @@
 	function handler()
 	{
 		//检查数据合法性
-		var title = $("#inputTitle");
-		var auther = $("#auther");
-		var contents = $("#contents");
+		var title = $("#inputTitle"),
+			auther = $("#auther"),
+			contents = $("#contents");
 		if(title.val() == "" )
 		{
 			let span = "<span class='warningLetter'>标题不能为空</span>";
-			if(title.parent().children("span"))
-			{
-				title.parent().children("span").remove();
-			}
-			title.parent().append(span);
-			title.focus();
+			check(title, span);
 			return;
 		}
 		if(auther.val() == "")
 		{
 			let span = "<span class='warningLetter'>发布单位不能为空</span>";
-			if(auther.parent().children("span"))
-			{
-				auther.parent().children("span").remove();
-			}
-			auther.parent().append(span);
-			auther.focus();
+			check(auther, span);
 			return;
 		}
 		if(contents.val() == "")
 		{
 			let span = "<span class='warningLetter'>内容不能为空</span>";
-			//如果此前已经有警告内容，则移除
-			if(contents.parent().children("span"))
-			{
-				contents.parent().children("span").remove();
-			}
-			//否则，提示警告
-			contents.parent().append(span);
-			//获取焦点
-			contents.focus();
+			check(contents, span);
 			//阻止表单提交
 			return;
 		}
@@ -80,7 +62,6 @@
 			dataType: "json",
 			success: function(result)
 			{
-				console.log("success send the release data.");
 				console.log("您发布了一项通知。");
 				// alert("发布成功！");
 				//清空输入
@@ -89,20 +70,9 @@
 				contents.val("");
 
 				//如有警告，去除警告文字
-				if(title.parent().children("span"))
-				{
-					title.parent().children("span").remove();
-				}
-				if(auther.parent().children("span"))
-				{
-					auther.parent().children("span").remove();
-				}
-				if(contents.parent().children("span"))
-				{
-					contents.parent().children("span").remove();
-				}
-
-
+				checkWarn(title);
+				checkWarn(auther);
+				checkWarn(contents);
 
 			},//end-success
 			error: function(e)
@@ -110,15 +80,84 @@
 				console.log(e.readyState+"/"+e.status+"/");
 			}//end-error
 		});
+	}//end-handler
 
 
 
+	//来访登记表格
+	$("#visitTable").bootstrapTable({
+		method: "post",
+		url: "/visit",
+		contentType: "application/x-www-form-urlencoded",
+		cache: false,
+		pagination: true,
+		pageSize: 10,
+		pageNumber: 1,
+		pageList: [5,10,20,50],
+		sidePagination: "server",
+		queryParams: visitParams,
+		showColumns: true,
+		showRefresh: true,
+		showToggle: true,
+		columns: [
+		{
+			align: "center",
+			field: "index",
+			title: "序号",
+			formatter: runningFormatter
+		},
+		{
+			align: "center",
+			field: "name",
+			title: "姓名"
+		},
+		{
+			align: "center",
+			field: "sex",
+			title: "性别"
+		},
+		{
+			align: "center",
+			field: "reason",
+			title: "来访事由"
+		},
+		{
+			align: "center",
+			field: "date",
+			title: "来访日期"
+		},
+		{
+			align: "center",
+			field: "contact",
+			title: "联系方式"
+		}],
+		onLoadSuccess: function(result)
+		{
+			console.log("来访信息加载成功");
+		},
+		onLoadError: function(error)
+		{
+			console.log(error);
+		}
+	});
+	//打包查询条件
+	function visitParams(params)
+	{
 
+		//序列化表单数据
+		var queryData = processData("frmVisit");
+		console.log(queryData);
+
+		//增加两个请求时向服务端传递的参数
+		queryData.limit = params.limit;
+		queryData.offset = params.offset;
+
+		return queryData;
 	}
+	
 
 
-
-
+	//查询信息表格
 	$("#searchTable").bootstrapTable({
 		method: "post",
 		url: "/search",
@@ -130,31 +169,64 @@
 		pageList: [10,20,50,100,200],
 		sidePagination: "server",
 		queryParams: queryParam,
-		// rowStyle: rowStyles,
 		showColumns: true,
 		showRefresh: true,
 		showToggle: true,
+		columns: [
+		{
+			align: "center",
+			field: "index",
+			title: "序号",
+			formatter: runningFormatter
+		},
+		{
+			align: "center",
+			field: "id",
+			title: "学号"
+		},
+		{
+			align: "center",
+			field: "name",
+			title: "姓名"
+		},
+		{
+			align: "center",
+			field: "sex",
+			title: "性别"
+		},
+		{
+			align: "center",
+			field: "college",
+			title: "学院"
+		},
+		{
+			align: "center",
+			field: "building",
+			title: "宿舍楼"
+		},
+		{
+			align: "center",
+			field: "room",
+			title: "房间号"
+		},
+		{
+			field: "operate",
+			title: "操作",
+			align: "center",
+			formatter: operateFormatter,
+			events: "window.operateEvents"
+		}],
 		onLoadSuccess: function(result)
 		{
-			console.log("load successfully");
+			console.log("住宿信息加载成功");
 		},
 		onLoadError: function(e)
 		{
-			console.log("load failed");
+			console.log("住宿信息加载失败");
 			console.log(e);
 		}
 	});//end-bootstrapTable
 
-
-
-	//点击查询
-	$("#query").click(function()
-	{
-		//检查数据合法性？
-
-		//刷新表格
-		$("#searchTable").bootstrapTable(("refresh"));
-	});
 
 	//打包查询条件
 	function queryParam(params)
@@ -171,15 +243,221 @@
 	}
 
 
+	//点击查询
+	$("#query").click(function()
+	{
+		//检查数据合法性？应该可以不用吧，反正输入不合法就会查不到数据
+
+		//刷新表格
+		$("#searchTable").bootstrapTable(("refresh"));
+	});
+
+	
+
+	//点击增加
+	$("#add").click(function()
+	{
+		//检查数据合法性
+		var id = $("#id"),
+			name = $("#name"),
+			sex = $("#sex"),
+			college = $("#college"),
+			building = $("#building"),
+			room = $("#room");
+		if(id.val() == "")
+		{
+			let span = "<span class='warningLetter'>必填字段</span>";
+ 			check(id, span);
+ 			return;
+		}
+		if(!/^[0-9]{11}$/.test(id.val()))
+		{
+			let span = "<span class='warningLetter'>学号格式应为11位数字</span>";
+ 			check(id, span);
+ 			return;
+		}
+		if(name.val() == "")
+		{
+			let span = "<span class='warningLetter'>必填字段</span>";
+ 			check(name, span);
+ 			return;
+		}
+		if(sex.val() == "")
+		{
+			let span = "<span class='warningLetter'>必填字段</span>";
+ 			check(sex, span);
+ 			return;
+		}
+		if(!(sex.val() == "男" || sex.val() == "女"))
+		{
+			let span = "<span class='warningLetter'>性别应为“男”或“女”</span>";
+ 			check(sex, span);
+ 			return;
+		}
+		if(college.val() == "")
+		{
+			let span = "<span class='warningLetter'>请选择学院</span>";
+ 			check(college, span);
+ 			return;
+		}
+		if(building.val() == "")
+		{
+			let span = "<span class='warningLetter'>请选择宿舍楼号</span>";
+ 			check(building, span);
+ 			return;
+		}
+		if(room.val() == "")
+		{
+			let span = "<span class='warningLetter'>请填写房间号</span>";
+			check(room, span);
+ 			return;
+		}
+
+		//存进数据库
+		$.ajax(
+		{
+			url: "/add",
+			type: "post",
+			data: processData("frmConditions"),
+			dataType: "json",
+			success: function(result)
+			{
+				console.log(result.message);
+				//清空输入
+				if(result.code == 1)	//成功
+				{
+					//模拟重置按钮的点击行为以清空输入
+					$("#reset").trigger("click");
+					checkWarn(id);
+					checkWarn(name);
+					checkWarn(sex);
+					checkWarn(college);
+					checkWarn(building);
+					checkWarn(room);
+
+				}
+			},
+			error: function(e)
+			{
+				console.log(e);
+			}
+		});//end-ajax
+	});//end-add
 
 
+	//检查数据合法性
+	function check(ele, span)
+	{
+		//如果此前已经有警告内容，则移除
+		if(ele.parent().children("span"))
+		{
+			ele.parent().children("span").remove();
+		}
+		//否则，提示警告
+		ele.parent().append(span);
+		//获取焦点
+		ele.focus();
+		ele.select();
+		return;
+	}
 
-
+	//检查是否有警示文字
+	function checkWarn(ele)
+	{
+		if(ele.parent().children("span"))
+		{
+			ele.parent().children("span").remove();
+		}
+	}
 
 	function runningFormatter(value, row, index) 
 	{
-	    return index;
+	    return index+1;
 	}
+	function operateFormatter(value, row, index)
+	{
+		return "<button id='edit' type='button' class='btn btn-primary btn-sm'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span> 修改</button>"+
+				"<button id='delete' type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span> 删除</button>";
+	}
+	window.operateEvents = {
+		'click #edit': function(e, value, row, index)
+		{
+			// console.log(value);		//这个value应该是button的value值
+			console.log(row);
+			console.log(index);			//要+1才能得到实际的
+
+			$("#editModal").modal("show");
+			$("#editModal").on("shown.bs.modal", function()
+			{
+				//填充信息
+				$("#editId").val(row.id);
+				$("#editName").val(row.name);
+				if(row.sex == "男")
+				{
+					$("#editSex[value='男']").attr("checked","checked");
+				}
+				else if(row.sex == "女")
+				{
+					$("#editSex[value='女']").attr("checked","checked");
+				}
+				$("#editCollege").val(row.college);
+				$("#editBuilding").val(row.building);
+				$("#editRoom").val(row.room);
+			});
+
+			//提交修改
+			$("#edit_ok").click(function()
+			{
+				//关闭模态窗
+				$("#editModal").modal("hide");
+				//打包数据
+				let editData = processData("frmEdit");
+				//把修改存进数据库
+				$.ajax(
+				{
+					type: "post",
+					url: "/edit",
+					data: editData,
+					dataType: "json",
+					success: function(result)
+					{
+						alert(result.message);
+					},
+					error: function(e)
+					{
+						console.log(e);
+					}
+				});
+			});
+
+		},
+		'click #delete': function(e, value, row, index)
+		{
+			var v = confirm("确定删除此人信息吗？");
+			if(v == true)	//确定
+			{
+				//把此人信息发给后台，后台从数据库删除信息
+				$.ajax(
+				{
+					type: "post",
+					url: "delete",
+					data: row,
+					dataType: "json",
+					success: function(result)
+					{
+						alert(result.message);
+						//刷新表格
+						$("#searchTable").bootstrapTable(("refresh"));
+					},
+					error: function(e)
+					{
+						console.log(e);
+					}
+				});
+			}//end-if
+
+		}//end-click #delete
+	};
 
 
 	//工具函数：处理表单数据以转成JSON格式字符串

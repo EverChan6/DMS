@@ -15,81 +15,105 @@
 
 	initTable();
 
-// 暂且放过你，哼！
-function initTable(){
+	// 暂且放过你，哼！
+	function initTable(){
 
-		$("#myProgress").bootstrapTable({
-			method: "post",
-	        url: "api/studentRole/myProgress",
-	        contentType: "application/x-www-form-urlencoded",
-	        cache: false,						//是否使用缓存
-	        pagination: true,					//启用分页
-	 		pageNumber: 1,						//初始化加载第一页，默认第一页
-	 		pageSize: 10,						//每页的记录行数
-	 		pageList: [10,20,50],				//可供选择的每页行数
-	 		sidePagination: "server",			//服务端分页
-	        queryParams: function(params){		//查询参数
-	        	var queryData = {};
-	        	//增加两个请求时向服务端传递的参数
-	        	queryData.limit = params.limit;
-	        	queryData.offset = params.offset;
-	        	return queryData;
-	        },			
-	        showColumns: true,                  //是否显示所有的列
-	        showRefresh: true,                  //是否显示刷新按钮
-	        showToggle:true,                    //是否显示详细视图和列表视图
-	 		// rowStyle: rowStyles,				//行样式		
-	 		columns: [
-	 		{
-	 			field: "index",
-	 			title: "序号",
-	 			align: "center",
-	 			formatter: runningFormatter
-	 		},
-	 		{
-	 			field: "id",
-	 			title: "学号",
-	 			align: "center"
-	 		},
-	 		{
-	 			field: "name",
-	 			title: "姓名",
-	 			align: "center"
-	 		},
-	 		{
-	 			field: "dormitory",
-	 			title: "宿舍楼",
-	 			align: "center"
-	 		},
-	 		{
-	 			field: "room",
-	 			title: "房间号",
-	 			align: "center"
-	 		},
-	 		{
-	 			field: "item",
-	 			title: "业务项目",
-	 			align: "center"
-	 		},
-	 		{
-	 			field: "operation",
-	 			title: "操作",
-	 			align: "center"
-	 			// ,formatter: operateFormatter,
-	 			// events: window.operateEvents
-	 		}],
-	 		onLoadSuccess: function(result)
-	 		{
-	 			console.log("result: "+result);
-	 		},
-	 		onLoadError: function(err)
-	 		{
-	 			console.log("error: "+err);
-	 		}
- 		});//end-bootstrapTable
+			$("#myProgress").bootstrapTable({
+				method: "post",
+		        url: "api/studentRole/myProgress",
+		        contentType: "application/x-www-form-urlencoded",
+		        cache: false,						//是否使用缓存
+		        pagination: true,					//启用分页
+		 		pageNumber: 1,						//初始化加载第一页，默认第一页
+		 		pageSize: 10,						//每页的记录行数
+		 		pageList: [10,20,50],				//可供选择的每页行数
+		 		sidePagination: "server",			//服务端分页
+		        queryParams: function(params){		//查询参数
+		        	var queryData = {};
+		        	//增加两个请求时向服务端传递的参数
+		        	queryData.limit = params.limit;
+		        	queryData.offset = params.offset;
+		        	return queryData;
+		        },			
+		        showColumns: true,                  //是否显示所有的列
+		        showRefresh: true,                  //是否显示刷新按钮
+		        showToggle:true,                    //是否显示详细视图和列表视图
+		 		// rowStyle: rowStyles,				//行样式		
+		 		columns: [
+		 		{
+		 			field: "index",
+		 			title: "序号",
+		 			align: "center",
+		 			formatter: runningFormatter
+		 		},
+		 		{
+		 			field: "id",
+		 			title: "学号",
+		 			align: "center"
+		 		},
+		 		{
+		 			field: "name",
+		 			title: "姓名",
+		 			align: "center"
+		 		},
+		 		{
+		 			field: "dormitory",
+		 			title: "宿舍楼",
+		 			align: "center"
+		 		},
+		 		{
+		 			field: "room",
+		 			title: "房间号",
+		 			align: "center"
+		 		},
+		 		{
+		 			field: "spareDay",
+		 			title: "日期",
+		 			align: "center"
+		 		},
+		 		{
+		 			field: "spareTime",
+		 			title: "时间",
+		 			align: "center"
+		 		},
+		 		{
+		 			field: "item",
+		 			title: "业务项目",
+		 			align: "center"
+		 		},
+		 		{
+		 			field: "operation",
+		 			title: "操作",
+		 			align: "center",
+		 			formatter: operateFormatter,
+		 			events: 'window.operateEvents'
+		 		}],
+		 		onLoadSuccess: function(result)
+		 		{
+		 			console.log("成功加载业务进度表格");
+		 		},
+		 		onLoadError: function(err)
+		 		{
+		 			console.log("error: "+err);
+		 		}
+	 		});//end-bootstrapTable
 
 
-}//end-initTable	
+	}//end-initTable	
+
+
+
+	//表格序号列
+	function runningFormatter(value, row, index)//序号,从0开始
+	{
+		return index+1;
+	}
+	//表格操作列
+	function operateFormatter(value, row, index)
+	{
+		return "<button id='del' type='button' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-remove' aria-hidden='true'></span> 删除</button>"+
+				"<button id='done' type='button' class='btn btn-primary btn-sm'><span class='glyphicon glyphicon-ok' aria-hidden='true'></span> 完成</button>";
+	}
 
 
 
@@ -108,7 +132,7 @@ function initTable(){
 			{
 				// console.log(result.message);					//服务端返回的信息
 				//注意这是个全局变量
-				data = result.data;							//要渲染的数据（包括标题、发布单位、时间和内容
+				data = result.data;								//要渲染的数据（包括标题、发布单位、时间和内容
 				let $anotice = $(".notice");					//取得a标签，以渲染标题
 				// console.log($anotice);
 				let $span = $(".time");							//取得span标签，以渲染时间
@@ -213,7 +237,7 @@ function initTable(){
 		});
 
 
-	};
+	};//end-showNotice
 	
 
 	
@@ -235,45 +259,25 @@ function initTable(){
  		if(name.val() == "")
  		{
  			let span = "<span class='warningLetter'>姓名不能为空</span>";
- 			if(name.parent().children("span"))
-			{
-				name.parent().children("span").remove();
-			}
- 			name.parent().append(span);
- 			name.focus();
+ 			check(name, span);
  			return;
  		}
  		if(sid.val() == "")
  		{
  			let span = "<span class='warningLetter'>学号不能为空</span>";
- 			if(sid.parent().children("span"))
- 			{
- 				sid.parent().children("span").remove();
- 			}
- 			sid.parent().append(span);
- 			sid.focus();
+ 			check(sid, span);
  			return;
  		}
  		if(!/^[0-9]{11}$/.test(sid.val()))
  		{
  			let span = "<span class='warningLetter'>学号格式应为11位数字</span>";
- 			if(sid.parent().children("span"))
- 			{
- 				sid.parent().children("span").remove();
- 			}
- 			sid.parent().append(span);
- 			sid.select();
+ 			check(sid, span);
  			return;
  		}
  		if(college.val() == "")
  		{
  			let span = "<span class='warningLetter'>请选择所在学院</span>";
- 			if(college.parent().children("span"))
-			{
-				college.parent().children("span").remove();
-			}
- 			college.parent().append(span);
- 			college.focus();
+ 			check(college, span);
  			return;
  		}
 
@@ -304,18 +308,9 @@ function initTable(){
 					college.val("");
 					room.val("");
 					//如果有警示文字，去掉
-					if(name.parent().children("span"))
-					{
-						name.parent().children("span").remove();
-					}
-					if(sid.parent().children("span"))
-					{
-						sid.parent().children("span").remove();
-					}
-					if(college.parent().children("span"))
-					{
-						college.parent().children("span").remove();
-					}
+					checkWarn(name);
+					checkWarn(sid);
+					checkWarn(college);
 					//切换到“业务进度”标签页
 					$(".navDiv li:last-child a").trigger("click");
  				}
@@ -331,7 +326,7 @@ function initTable(){
  		});//end-ajax
 
 
- 	});
+ 	});//end-提交申请
 
 
 
@@ -353,70 +348,39 @@ function initTable(){
  		if(building.val() == "")
  		{
  			let span = "<span class='warningLetter'>请选择所在宿舍楼</span>";
- 			if(building.parent().children("span"))
-			{
-				building.parent().children("span").remove();
-			}
- 			building.parent().append(span);
- 			building.focus();
+ 			check(building, span);
  			return;		//阻止提交表单
  		}//end-if
  		if(room.val() == "")
  		{
  			let span = "<span class='warningLetter'>房间号不能为空</span>";
- 			if(room.parent().children("span"))
-			{
-				room.parent().children("span").remove();
-			}
- 			room.parent().append(span);
- 			room.focus();
+ 			check(room, span);
  			return;
  		}//end-if
  		if(id.val() == "")
  		{
  			let span = "<span class='warningLetter'>学号不能为空</span>";
- 			if(id.parent().children("span"))
-			{
-				id.parent().children("span").remove();
-			}
- 			id.parent().append(span);
- 			id.focus();
+ 			check(id, span);
  			return;
  		}//end-if
  		if(!/^[0-9]{11}$/.test(id.val()))
  		{
  			let span = "<span class='warningLetter'>学号格式应为11位数字</span>";
- 			if(id.parent().children("span"))
- 			{
- 				id.parent().children("span").remove();
- 			}
- 			id.parent().append(span);
- 			id.select();
+ 			check(id, span);
  			return;
  		}//end-if
  		if(phone.val() == "")
  		{
  			let span = "<span class='warningLetter'>联系电话不能为空</span>";
- 			if(phone.parent().children("span"))
-			{
-				phone.parent().children("span").remove();
-			}
- 			phone.parent().append(span);
- 			phone.focus();
+ 			check(phone, span);
  			return;
  		}//end-if
  		if(!/^1[34578]\d{9}$/.test(phone.val()))
  		{
  			let span = "<span class='warningLetter'>电话号码格式不对</span>";
- 			if(phone.parent().children("span"))
- 			{
- 				phone.parent().children("span").remove();
- 			}
- 			phone.parent().append(span);
- 			phone.select();
- 			return;
+ 			check(phone, span);
+ 			return;		//阻止提交表单
  		}
-
 
 
 
@@ -439,17 +403,14 @@ function initTable(){
  				}//end-if
  				else if(result.code == 4)
  				{
- 					console.log("success send the fix data.");
  					alert(result.message);
 			 		//清空输入
-			 		building.val("");
-			 		room.val("");
-			 		id.val("");
-			 		name.val("");
-			 		item.val("");
-			 		phone.val("");
-			 		details.val("");
-			 		remark.val("");
+			 		$("#btnReset").trigger("click");
+			 		//去除警示文字
+			 		checkWarn(building);
+			 		checkWarn(room);
+			 		checkWarn(id);
+			 		checkWarn(phone);
 
 			 		//切换到“业务进度”标签页
 					$(".navDiv li:last-child a").trigger("click");
@@ -468,6 +429,41 @@ function initTable(){
  		return false;
 
  	});//end-btnFix
+
+
+
+
+ 	//增加警示文字
+	function check(ele, span)
+	{
+		//如果有警示文字，则去除
+		if(ele.parent().children("span"))
+		{
+			ele.parent().children("span").remove();
+		}
+		//否则，提示警示
+		ele.parent().append(span);
+		//获取焦点
+		ele.focus();
+		//选择文本
+		ele.select();
+		return;
+	}
+
+
+	//清除警示文字
+	function checkWarn(ele)
+	{
+		//如果有警示文字，则去除
+		if(ele.parent().children("span"))
+		{
+			ele.parent().children("span").remove();
+		}
+	}
+
+
+
+
 
 
  	//报修标签页-在宿舍时间
@@ -491,7 +487,71 @@ function initTable(){
 
 
 
+ 	window.operateEvents = {
 
+ 		'click #del': function(e, value, row, index){	
+ 			console.log("您点击了删除按钮");
+
+ 			var boolValue = confirm("确定删除吗？");
+
+ 			//选择确定删除
+ 			if(boolValue == true)
+ 			{
+ 				//取得当前行的信息
+	 			console.log(row);
+	 			//在数据库里删除该记录
+	 			$.ajax(
+	 			{
+	 				method: "post",
+	 				url: "api/del",
+	 				data: row,
+	 				dataType: "json",
+	 				success: function(result)
+	 				{
+	 					alert(result.message);
+	 				},
+	 				error: function(result)
+	 				{
+	 					console.log(result.message);
+	 				}
+	 			});
+ 			}
+ 			else    //选择取消
+ 			{
+ 				
+ 			}
+
+
+ 		},
+ 		'click #done': function(e, value, row, index){
+ 			console.log("您点击了完成按钮");
+
+ 			//把该项记录在数据库记录的status子段设置为"已处理"，本来应该是"未处理"
+ 			$.ajax(
+ 			{
+ 				method: "post",
+ 				url: "api/done",
+ 				data: row,
+ 				dataType: "json",
+ 				success: function(result)
+ 				{
+ 					console.log(result.message);
+ 				},
+ 				error: function(result)
+ 				{
+ 					console.log(result.message)
+ 				}
+
+ 			});
+
+ 			//然后把这个td里的内容变成文字“已处理”
+
+
+ 		}
+
+ 	};
+
+ 	
  	
 
 
@@ -512,12 +572,10 @@ function initTable(){
 
 
 
- 	//表格列格式化
-	function runningFormatter(value, row, index)//序号,从0开始
-	{
-		return index+1;
-	}
+ 	
 
+	
+	
  	//转换星期几
  	function getWeekday(w)
  	{
@@ -555,7 +613,7 @@ function initTable(){
 
 
 
- 	//工具函数：处理表单数据以转成JSON格式字符串
+ 	//工具函数：处理表单数据
 	function processData(frmName)
 	{
 		//序列化获得表单数据(即查询条件)

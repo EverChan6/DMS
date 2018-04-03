@@ -178,7 +178,7 @@ router.post("/studentRole/appLodForm", function(req, res, next)
             responseData.code = 2;
             responseData.message = '重复申请（请想想您之前是不是干过这事';
             res.json(responseData);
-            return
+            return;
         }
 
         // 保存申请表的信息到数据库中
@@ -201,7 +201,7 @@ router.post("/studentRole/appLodForm", function(req, res, next)
         responseData.code = 4;
         responseData.message = '申请成功！';
         res.json(responseData);
-        return
+        return;
     });
 
 
@@ -283,8 +283,8 @@ router.post("/studentRole/myProgress", function(req, res, next)
 {
     //取得当前用户，以便从数据库查看是否有该用户的操作记录
     var userInfo = JSON.parse(req.cookies.get('userInfo'));
-    //!!!new
-    var result = {"total": "", "rows": []};    //存储返回给前端的数据
+    //存储返回给前端的数据
+    var result = {"total": 0, "rows": []};    
 
     //取学号去数据库匹配申请记录
     Apply.findOne({sid: userInfo.username}, function(err, docs)
@@ -293,14 +293,13 @@ router.post("/studentRole/myProgress", function(req, res, next)
         {
             if(docs != "" && docs != null)
             {
-                console.log("数据库匹配到的申请记录：（业务进度）");
-                console.log(docs);
-                //!!!new
+                // console.log("数据库匹配到的申请记录：（业务进度）");
+                // console.log(docs);
                 result.rows.push({id: docs.sid, name: docs.name, dormitory: docs.dormitory, room: docs.room, item: "申请入住"});
                 result.total = result.rows.length;
 
             }//end-if
-            else if(docs == null)
+            else if(docs == null || doc == "")
             {
                 responseData.code = 2;
                 responseData.message = '没有该用户的操作记录';
@@ -312,7 +311,7 @@ router.post("/studentRole/myProgress", function(req, res, next)
         else
         {
             responseData.code = 5;
-            responseData.message = "内部服务器错误";
+            responseData.message = err;
             res.json(responseData);
             return;
         }//end-else
@@ -325,40 +324,156 @@ router.post("/studentRole/myProgress", function(req, res, next)
         {
             if(doc != "" && doc != null)
             {
-                console.log("数据库匹配到的报修记录：（业务进度） ");
-                console.log(doc);
+                // console.log("数据库匹配到的报修记录：（业务进度） ");
+                // console.log(doc);
                 for(let i = 0; i < doc.length; i ++)
                 {
-                    //原本是 responseData.data.push
-                    result.rows.push({id: doc[i].id, name: doc[i].name, dormitory: doc[i].building, room: doc[i].room, item: "报修" });
+                    result.rows.push({id: doc[i].id, name: doc[i].name, dormitory: doc[i].building, room: doc[i].room,
+                                        spareDay: doc[i].spareDay, spareTime: doc[i].spareTime, item: "报修" });
                 }
                 //更新total的值
                 result.total = result.rows.length;
+                //返回
                 res.json(result);
-
-                //!!!old
-                // res.json(responseData);
                 return;
             }
-            else if(doc == null)
+            else if(doc == null || doc == "")
             {
-                responseData.code = 2;
-                responseData.message = "没有该用户的报修记录";
-                res.json(responseData);
-                return;
+                //为了防止只有申请记录而没有报修记录时没有实际数据返回，所以在这里返回
+                if(result.total > 0)    //有申请数据
+                {
+                    res.json(result);
+                    return;
+                }
+                else
+                {
+                    responseData.code = 2;
+                    responseData.message = "没有该用户的报修记录";
+                    res.json(responseData);
+                    return; 
+                }
+                
             }
         }
         else if(err)
         {
             responseData.code = 5;
-            responseData.message = "内部服务器错误";
+            responseData.message = err;
             res.json(responseData);
-            return
+            return;
         }
     });//end-Fix.find
 
 
+
 });//end-业务进度
+
+
+
+router.post("/del", function(req, res, next)
+{
+    console.log("收到前台的删除请求");
+    console.log(req.body);
+    //匹配数据库相应记录，然后删除
+    if(req.body.item == "申请入住")
+    {
+        Apply.findOne({sid: req.body.id}, function(err, doc)
+        {
+            if(doc != "" && doc != null)    //成功匹配
+            {
+                //执行删除
+                Apply.remove({sid: req.body.id}, function(err)
+                {
+                    if(!err)
+                    {
+                        responseData.code = 4;
+                        responseData.message = "成功删除该项申请记录";
+                        res.json(responseData);
+                        return;
+                    }
+                    else
+                    {
+                        responseData.code = 2;
+                        responseData.message = err;
+                        res.json(responseData);
+                        return;
+                    }
+                });
+            }
+            if(doc == "" || doc == null)
+            {
+                responseData.code = 2;
+                responseData.message = "找不到该项纪录，无法删除";
+                res.json(responseData);
+                return;
+            }
+            if(err)
+            {
+                responseData = 2;
+                responseData.message = err;
+                res.json(responseData);
+                return;
+            }
+        });
+    }
+    else if(req.body.item == "报修")
+    {
+        Fix.findOne({id: req.body.id, }, function(err, doc)
+        {
+            if(doc != "" && doc != null)        //成功匹配
+            {
+                Fix.remove({id: req.body.id, spareDay: req.body.spareDay, spareTime: req.body.spareTime}, function(err)    //删除
+                {
+                    if(!err)
+                    {
+                        responseData.code = 4;
+                        responseData.message = "成功删除该项报修记录";
+                        res.json(responseData);
+                        return;
+                    }
+                    else
+                    {
+                        responseData.code = 2;
+                        responseData.message = err;
+                        res.json(responseData);
+                        return;
+                    }
+                });
+            }
+            if(doc == "" || doc == null)
+            {
+                responseData.code = 2;
+                responseData.message = "找不到该项报修记录";
+                res.json(responseData);
+                return;
+            }
+            if(err)
+            {
+                responseData.code = 2;
+                responseData.message = err;
+                res.json(responseData);
+                return;
+            }
+        });
+
+    }
+    
+});
+
+
+router.post("/done", function(req, res, next)
+{
+    console.log("收到前台的完成确认");
+    console.log(req.body);
+    //匹配数据库相应记录，然后设置status字段为"已处理"
+
+    //如果成功设置
+    responseData.message = "成功设置为已处理";
+    res.json(responseData);
+    return;
+});
+
+
 
 
 // 返回数据

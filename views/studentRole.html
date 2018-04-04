@@ -13,7 +13,7 @@
 <body>
 
 	<!-- 导航及页头 -->
-	<div class="page-header navDiv"z>
+	<div class="page-header navDiv">
 	  	<h1>辣鸡</h1>
 		<ul class="nav nav-tabs" role="tablist">
 		  <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
@@ -31,67 +31,74 @@
 		<div id="home" class="panel panel-default tab-pane active" role="tabpanel">
 		  <div class="panel-heading">
 		    <h4 class="panel-title notification">通知公告</h4>
-			<h4 class="panel-title noticeMore"><a href="#">更多>></a></h4>
+			<h4 class="panel-title noticeMore"><a href="#">更多&gt;&gt;</a></h4>
 		  </div>
 		  <div class="panel-body">
-			<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-			  <!-- Indicators -->
-			  <ol class="carousel-indicators">
-			    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-			    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-			    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-			  </ol>
+		  	<div class="flex-div">
+		  		<div class="carouselContainer">
+				<div id="carousel-example-generic" class="carousel slide carousel-example-generic" data-ride="carousel">
+				  <!-- Indicators -->
+				  <ol class="carousel-indicators">
+				    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+				    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+				    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+				  </ol>
 
-			  <!-- Wrapper for slides -->
-			  <div class="carousel-inner" role="listbox">
-			    <div class="item active">
-			      <img src="../public/img/show1.jpg" alt="First Slide">
-			      <div class="carousel-caption">
-			        <h3>温馨提示</h3>
-			        <p>水电缴费通知</p>
-			      </div>
-			    </div>
-			    <div class="item">
-			      <img src="../public/img/show2.jpg" alt="Second Slide">
-			      <div class="carousel-caption">
-			        <h3>通知</h3>
-			        <p>近日需知</p>
-			      </div>
-			    </div>
-			    <div class="item">
-			      <img src="../public/img/show3.jpg" alt="Third Slide">
-			      <div class="carousel-caption">
-			        <h3>第三张</h3>
-			        <p>不知道该写什么暂且这样</p>
-			      </div>
-			    </div>
-			  </div>
+				  <!-- Wrapper for slides -->
+				  <div class="carousel-inner" role="listbox">
+				    <div class="item active">
+				      <img src="../public/img/show1.jpg" alt="First Slide">
+				      <div class="carousel-caption">
+				        <h3></h3>
+				        <p></p>
+				      </div>
+				    </div>
+				    <div class="item">
+				      <img src="../public/img/show2.jpg" alt="Second Slide">
+				      <div class="carousel-caption">
+				        <h3></h3>
+				        <p></p>
+				      </div>
+				    </div>
+				    <div class="item">
+				      <img src="../public/img/show3.jpg" alt="Third Slide">
+				      <div class="carousel-caption">
+				        <h3></h3>
+				        <p></p>
+				      </div>
+				    </div>
+				  </div>
 
-			  <!-- Controls -->
-			  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-			    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-			    <span class="sr-only">Previous</span>
-			  </a>
-			  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-			    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-			    <span class="sr-only">Next</span>
-			  </a>
-			</div> 
-			<br><br>
-		    <ul>
-				<li><a href="#" class="notice"></a><span class="time"></span></li>
-				<li><a href="#" class="notice"></a><span class="time"></span></li>
-				<li><a href="#" class="notice">寒假停水通知</a><span class="time">2018-1-2</span></li>
-				<li><a href="#" class="notice"></a><span class="time"></span></li>
-				<li><a href="#" class="notice"></a><span class="time"></span></li>
+				  <!-- Controls -->
+				  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+				    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				    <span class="sr-only">Previous</span>
+				  </a>
+				  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+				    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				    <span class="sr-only">Next</span>
+				  </a>
+				</div> 
+				</div>
+				<div class="noticeContainer">
+				<div id="noticeList" class="noticeList">
+				    <ul>
+						<li><a href="#" class="notice"></a><span class="time"></span></li>
+						<li><a href="#" class="notice"></a><span class="time"></span></li>
+						<li><a href="#" class="notice"></a><span class="time"></span></li>
+						<li><a href="#" class="notice"></a><span class="time"></span></li>
+						<li><a href="#" class="notice"></a><span class="time"></span></li>
+					</ul>
+				</div>
+				</div>
+			</div><!-- flex-div -->
+		  </div><!-- panel-body -->
+		</div><!-- home标签页 -->
 
-			</ul>
-		  </div>
-		</div>
 
-
+		<!-- 通知内容页返回去首页的按钮 -->
+		<h4 class="panel-title newHeading"><a href="#" id="return">&lt;返回</a></h4>
 		<!-- 显示具体通知的panel-body -->
-		<h4 class='panel-title newHeading'><a href='#' id='return'><返回</a></h4>
 		<div id="showNotice">
 			<div>
 				<h3 id="showTitle"></h3>
@@ -115,9 +122,9 @@
 		<div id="applyLodging" class="tab-pane" role="tabpanel">
 			<div class="panel panel-default">
 			  <!-- Default panel contents -->
-			  <div class="panel-heading"><h4 class="panel-title">申请入住宿舍</h4></div>
+			  <div class="panel-heading"><h4 class="panel-title">申请入住/换宿</h4></div>
 			  <div class="panel-body">
-			    <p>申请入住宿舍注意事项及需遵守细则</p>
+			    <!-- <p>申请入住宿舍注意事项及需遵守细则</p> -->
 			  </div>
 
 			  <!-- Form -->
@@ -173,7 +180,8 @@
 				<br><br>
 				<div class="form-group">
 					<div class="col-sm-4 col-sm-offset-5">
-						<button type="button" class="btn btn-primary" id="btnAppLod">提交申请</button>						
+						<button type="button" class="btn btn-primary" id="btnAppLod">入住申请</button>
+						<button type="button" class="btn btn-primary" id="btnSwitch">换宿申请</button>						
 					</div>
 				</div>
 			  </form>
@@ -313,21 +321,7 @@
 				</div>
 				<div class="panel-body">
 					<p>我的申请/报修业务进度</p>
-					<table id="myProgress">
-						<thead>
-							<tr>
-								<th data-formatter="runningFormatter" data-field="index">#</th>
-								<th data-field="id">学号</th>
-								<th data-field="name">姓名</th>
-								<th data-field="dormitory">宿舍楼</th>
-								<th data-field="room">房间号</th>
-								<th data-field="item">业务项目</th>
-								<th data-field="progress">进度</th>
-							</tr>
-						</thead>
-						
-						
-					</table>
+					<table id="myProgress"></table>
 				</div>
 			</div>
 		</div>
@@ -344,6 +338,7 @@
 	<script src="../public/js/jquery-3.2.1.js"></script>
 	<script src="../public/js/bootstrap.min.js"></script>
 	<script src="../public/js/bootstrap-table.js"></script>
+	<script src="../public/js/bootstrap-table-zh-CN.js"></script>
 	<script src="../public/js/studentRole.js"></script>
 </body>
 </html>

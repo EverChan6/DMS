@@ -14,6 +14,41 @@
 			clear: left;
 		}
 
+		/*控制轮播图和通知列表位置的*/
+		/*#home .panel-body div:nth-child(1)
+		{
+			display: -webkit-flex;
+			display: flex;
+          	-webkit-justify-content: space-around;
+          	justify-content: space-around;
+		}*/
+		.flex-div
+		{
+			display: -webkit-flex;
+			display: flex;
+          	-webkit-justify-content: space-around;
+          	justify-content: space-around;
+          	-webkit-flex-direction: row;
+          	flex-direction: row;
+		}
+
+
+		/*轮播图容器、通知列表容器大小*/
+		.carouselContainer,.noticeContainer
+		{
+			width: 45%;
+			height: 40%;
+		}
+
+
+
+		/*通知列表字体*/
+		#noticeList ul
+		{
+			font-size: 16px;
+		}
+
+
 		/*各项通知*/
 		.noticeMore a
 		{
@@ -29,6 +64,7 @@
 		}
 
 
+
 		/*警示文字*/
 		.warningLetter
 		{
@@ -36,24 +72,18 @@
 		}
 
 
-		/*图片大小*/
-		div#carousel-example-generic
-		{
-			width: 595px;
-			height: 446px;
-		}
+		
 
 
-		/*先隐藏包含显示通知全部内容的panel-body*/
+		
 		.newHeading
 		{
-			display: none;
+			display: none;			/*隐藏具体通知时的新panel-heading*/
 		}
 
 		#showNotice
 		{
-			display: none;
-			text-align: center;
+			display: none;			/*先隐藏包含显示通知全部内容的panel-body*/		
 		}
 
 		#showTitle
@@ -63,16 +93,10 @@
 
 		#showBody
 		{
-			/*width: 750px;*/
-			width: 75%;
-			height: auto;
+			width: 50%;
 			margin: 0 auto;
 		}
 
-		#showContents
-		{
-			/*text-align: center;*/
-		}
 
 		#showAuther
 		{

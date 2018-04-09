@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>辣几</title>
+	<title>宿舍管理系统</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap-table.css">
@@ -14,12 +14,12 @@
 
 	<!-- 导航及页头 -->
 	<div class="page-header navDiv">
-	  	<h1>辣鸡</h1>
+	  	<h1>宿舍管理系统</h1>
 		<ul class="nav nav-tabs" role="tablist">
 		  <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
 		  	data-toggle="tab">首页</a></li>
 		  <li role="presentation"><a href="#applyLodging" aria-controls="applyLodging" role="tab" data-toggle="tab">住宿申请</a></li>
-		  <li role="presentation"><a href="#applyReturn" aria-controls="applyReturn" role="tab" data-toggle="tab">退换宿申请</a></li>
+		  <li role="presentation"><a href="#allNotices" aria-controls="allNotices" role="tab" data-toggle="tab">通知公告</a></li>
 		  <li role="presentation"><a href="#fix" aria-controls="fix" role="tab" data-toggle="tab">报修</a></li>
 		  <li role="presentation"><a href="#myWork" aria-controls="myWork" role="tab" data-toggle="tab">业务进度</a></li>
 		</ul>
@@ -30,8 +30,7 @@
 		<!-- 通知公告标签页 -->
 		<div id="home" class="panel panel-default tab-pane active" role="tabpanel">
 		  <div class="panel-heading">
-		    <h4 class="panel-title notification">通知公告</h4>
-			<h4 class="panel-title noticeMore"><a href="#">更多&gt;&gt;</a></h4>
+		    <h4 class="panel-title notification">最新通知</h4>
 		  </div>
 		  <div class="panel-body">
 		  	<div class="flex-div">
@@ -81,15 +80,15 @@
 				</div> 
 				</div>
 				<div class="noticeContainer">
-				<div id="noticeList" class="noticeList">
-				    <ul>
-						<li><a href="#" class="notice"></a><span class="time"></span></li>
-						<li><a href="#" class="notice"></a><span class="time"></span></li>
-						<li><a href="#" class="notice"></a><span class="time"></span></li>
-						<li><a href="#" class="notice"></a><span class="time"></span></li>
-						<li><a href="#" class="notice"></a><span class="time"></span></li>
-					</ul>
-				</div>
+					<div id="noticeList" class="noticeList">
+					    <ul>
+							<li><a href="#" class="notice"></a><span class="time"></span></li>
+							<li><a href="#" class="notice"></a><span class="time"></span></li>
+							<li><a href="#" class="notice"></a><span class="time"></span></li>
+							<li><a href="#" class="notice"></a><span class="time"></span></li>
+							<li><a href="#" class="notice"></a><span class="time"></span></li>
+						</ul>
+					</div>
 				</div>
 			</div><!-- flex-div -->
 		  </div><!-- panel-body -->
@@ -114,6 +113,15 @@
 					<p id="showTime"></p>
 				</div>
 			</div>	
+		</div>
+
+		<!-- 显示具体通知返回去全部通知的按钮 -->
+		<h4 class="panel-title moreHeading"><a href="#" id="returnMore">&lt;返回</a></h4>
+		<!-- 显示全部通知的panel-body -->
+		<div id="showAllNotices">
+			<ul>
+				<li><a href="#" class="notice"></a><span class="time"></span></li>
+			</ul>
 		</div>
 
 
@@ -187,18 +195,15 @@
 			  </form>
 			</div>
 		</div>
-		<!-- 退换宿申请 -->
-		<div id="applyReturn" class="tab-pane" role="tabpanel">
+		<!-- 历史通知及公告 -->
+		<div id="allNotices" class="tab-pane" role="tabpanel">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">申请退换宿</h4>
+					<h4 class="panel-title">历史通知公告</h4>
 				</div>
 				<div class="panel-body">
-					<p>申请退宿/换宿需知</p>
+					<ul></ul>
 				</div>
-				<form>
-					
-				</form>
 			</div>
 		</div>
 		<!-- 报修 -->

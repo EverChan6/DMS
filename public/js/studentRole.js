@@ -130,8 +130,10 @@
 			{
 				// console.log(result.message);					//服务端返回的信息
 
+
+				//要渲染的数据（包括标题、发布单位、时间和内容
 				//注意这是个全局变量，因为后面点击具体通知的时候会用到
-				data = result.data;								//要渲染的数据（包括标题、发布单位、时间和内容
+				data = result.data;								
 
 				//这里渲染首页最新通知
 				showHome(data);
@@ -153,6 +155,7 @@
 
 
 
+	//渲染首页
 	function showHome(data)
 	{
 		let $anotice = $(".notice");					//取得a标签，以渲染标题
@@ -187,20 +190,71 @@
 
 	}
 
-	
+
+	//渲染历史通知	
 	function showHistory(data)
 	{
 		var histories = "";
 		for(let i = 0; i < data.length; i ++)
 		{
 			//拼接
-			histories += '<li><a href="#" class="notice">'+data[i].title+'</a><span class="time">'+data[i].time+'</span></li>'
+			histories += '<li><a href="#" class="showOne">'+data[i].title+'</a><span class="time">'+data[i].time+'</span></li>';
 		}
-		console.log(histories);
 		//插入DOM
 		$("#allNotices .panel-body ul").append(histories);
-	}
+		//点击具体通知
+		$(".showOne").on("click", showNotice);
+		function showNotice(e)
+		{
+			//取得事件源
+			var event = e || window.e;
+			var target = event.target || event.srcElement;
 
+			//取得点击通知的标题
+			var title = target.innerText;
+
+			var $ph = $("#allNotices .panel-heading");
+			var $pb = $("#allNotices .panel-body");
+			var $preHeading = $ph.html();	//原来的panel-heading（HTML片段
+			var $preBody = $pb.html();		//原来的panel-body（HTML片段
+			
+
+			//取得具体通知的内容，放进html标签里
+			for(let i = 0; i < data.length; i ++)
+			{
+				if(title == data[i].title)	//匹配
+				{
+					$("#showTitle").text(data[i].title);
+					$("#showContents").text(data[i].contents);
+					$("#showAuther").text(data[i].auther);
+					$("#showTime").text(data[i].time);
+				}
+			}
+			var $nh = $(".newHead").html();						//渲染新的面板标题
+			var $nb = $("#showNotice").html();						//渲染新的面板内容：具体通知内容
+
+			//替换标签标题
+			$ph.html($nh);
+			//替换标签内容
+			$pb.html($nb);
+
+			
+
+			//点击返回，则回到上一页
+			$(".panel-heading").on("click", "a#returnAll", function()
+			{
+				//要的效果应该是回到上一个面板
+				$ph.html($preHeading);
+				$pb.html($preBody);
+
+				//重新注册点击事件
+				$(".showOne").on("click", showNotice);
+
+			});
+
+
+		}//end-showNotice
+	}
 
 
 
@@ -212,21 +266,28 @@
 		//取得事件源
 		var event = e || window.e;
 		var target = event.target || event.srcElement;
-		// console.log("target: "+target);
-
+		console.log();
 
 		//取得点击通知的标题
-		// var title = target.text();
 		var title = target.innerText;
-		// console.log("title: "+title);
 
-		//先把原来的保存下来，以便恢复
-		var $home = $("#home");
-		var $ph = $("#home .panel-heading");
-		var $pb = $("#home .panel-body");
+		var $ph,$pb;
+		var $nh;
+		if(target.parentNode.parentNode.parentNode.className == "noticeList")
+		{
+			$ph = $("#home .panel-heading");
+			$pb = $("#home .panel-body");
+			$nh = $(".newHeading").html();
+		}
+		else if(target.parentNode.parentNode.parentNode.className == "listContainer")
+		{
+			$ph = $("#allNotices .panel-heading");
+			$pb = $("#allNotices .panel-body");
+			$nh = $(".newHead").html();
+		}
 		var $preHeading = $ph.html();	//原来的panel-heading（HTML片段
 		var $preBody = $pb.html();		//原来的panel-body（HTML片段
-	
+		
 
 		//取得具体通知的内容，放进html标签里
 		for(let i = 0; i < data.length; i ++)
@@ -239,12 +300,11 @@
 				$("#showTime").text(data[i].time);
 			}
 		}
-		var $nh = $(".newHeading").html();						//渲染新的面板标题
+		// var $nh = $(".newHeading").html();						//渲染新的面板标题
 		var $nb = $("#showNotice").html();						//渲染新的面板内容：具体通知内容
 
 		//替换标签标题
 		$ph.html($nh);
-
 		//替换标签内容
 		$pb.html($nb);
 
@@ -254,26 +314,17 @@
 		$("#return").click(back);
 		function back()
 		{
-			console.log("这是back里的return函数");
-			//听说如果是表单，go会保留表单数据，而back不会（好像会刷新页面
-			// history.go(-1);
-
-			//要的效果应该是回到上一个面板，就首页通知，上面那个不行！
+			//要的效果应该是回到上一个面板
 			$ph.html($preHeading);
 			$pb.html($preBody);
-
 
 			//重新注册点击事件
 			//这是从首页点击具体通知后返回首页
 			$(".notice").on("click", showNotice);
-			$("#more").on("click", showAllNotices);
-			
-			//这是从（更多里的）全部通知点击具体通知后返回全部通知
-			$("#return").on("click", back);
+
 		}
 
-
-	};//end-showNotice
+	}//end-showNotice
 	
 
 

@@ -8,12 +8,28 @@
 		$(this).tab("show");
 	});
 
+
+	//取得cookie信息
+	$.ajax(
+	{
+		type: "get",
+		url: "/getUsername",
+		dataType: "json",
+		success: function(result)
+		{
+			//渲染
+			$(".showUser").prepend("欢迎你，"+result.username);
+		},
+		error: function(err)
+		{
+			console.log(err);
+		}
+	});
+
+
+
+
 	$("#release").click(handler);
-
-
-
-
-
 	//发布通知事件处理程序
 	function handler()
 	{
@@ -333,7 +349,7 @@
 	{
 		//检查数据合法性
 		var id = $("#id"),
-			name = $("#name"),
+			name = $("#sname"),
 			sex = $("#sex"),
 			college = $("#college"),
 			building = $("#building"),
@@ -432,7 +448,7 @@
 		//获取焦点
 		ele.focus();
 		ele.select();
-		return;
+		// return;
 	}
 
 	//检查是否有警示文字
@@ -468,11 +484,11 @@
 				$("#editName").val(row.name);
 				if(row.sex == "男")
 				{
-					$("#editSex[value='男']").attr("checked","checked");
+					$("#editMale[value='男']").attr("checked","checked");
 				}
 				else if(row.sex == "女")
 				{
-					$("#editSex[value='女']").attr("checked","checked");
+					$("#editFemale[value='女']").attr("checked","checked");
 				}
 				$("#editCollege").val(row.college);
 				$("#editBuilding").val(row.building);
@@ -532,6 +548,120 @@
 
 		}//end-click #delete
 	};
+
+
+
+	//查看申请、报修
+	$("#handleTable").bootstrapTable(
+	{
+		method: "post",
+		url: "/handle",
+		contentType: "application/x-www-form-urlencoded",
+		cache: false,
+		pagination: true,
+		pageSize: 10,
+		pageNumber: 1,
+		pageList: [10,20,50,100,200],
+		sidePagination: "server",
+		queryParams: function(params)
+		{
+			var handleData = {};
+			handleData.limit = params.limit;
+			handleData.offset = params.offset;
+			return handleData;
+		},
+		showColumns: true,
+		showRefresh: true,
+		showToggle: true,
+		columns: [
+		{
+			align: "center",
+			field: "index",
+			title: "序号",
+			formatter: runningFormatter
+		},
+		{
+			align: "center",
+			field: "id",
+			title: "学号"
+		},
+		{
+			align: "center",
+			field: "name",
+			title: "姓名"
+		},
+		{
+			align: "center",
+			field: "item",
+			title: "报修项目"
+		},
+		{
+			align: "center",
+			field: "building",
+			title: "宿舍楼"
+		},
+		{
+			align: "center",
+			field: "room",
+			title: "房间号"
+		},
+		{
+			align: "center",
+			field: "phone",
+			title: "联系方式"
+		},
+		{
+			align: "center",
+			field: "details",
+			title: "详细"
+		},
+		{
+			align: "center",
+			field: "spareDay",
+			title: "空闲日期"
+		},
+		{
+			align: "center",
+			field: "spareTime",
+			title: "空闲时间"
+		},
+		{
+			align: "center",
+			field: "remark",
+			title: "备注"
+		}],
+		onLoadSuccess: function(result)
+		{
+			console.log("成功加载报修信息");
+		},
+		onLoadError: function(error)
+		{
+			console.log(error);
+		}
+
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	//工具函数：处理表单数据以转成JSON格式字符串

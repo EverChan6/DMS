@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>什么鬼</title>
+	<title>宿舍管理系统</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="../public/css/bootstrap-table.css">
@@ -11,7 +11,8 @@
 <body>
 	<!-- 导航及页头 -->
 	<div class="page-header navDiv">
-	  	<h1>什么鬼</h1>
+	  	<h1>宿舍管理系统</h1>
+	  	<span class="showUser"><a href="../" id="exit"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退出</a></span>
 		<ul class="nav nav-tabs" role="tablist">
 		  <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
 		  	data-toggle="tab">首页</a></li>
@@ -193,7 +194,7 @@
 						</div>
 						<div class="form-group col-sm-3">
 							<label for="name">姓名</label>
-							<input type="text" name="name" id="name" class="form-control">
+							<input type="text" name="name" id="sname" class="form-control">
 						</div>
 						<div class="form-group col-sm-3">
 							<label for="sex">性别</label>
@@ -336,14 +337,11 @@
 		<!-- 附加功能 -->
 		<div id="addtion" class="tab-pane panel panel-default">
 			<div class="panel-heading">
-				<h4 class="panel-title">暂时还不知道该做什么</h4>
+				<h4 class="panel-title">未处理的报修申请</h4>
 			</div>
 			<div class="panel-body">
-				<p>好好想想吧</p>
+				<table id="handleTable"></table>
 			</div>
-			<form>
-				
-			</form>
 		</div>
 
 	</div>

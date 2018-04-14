@@ -15,12 +15,13 @@
 	<!-- 导航及页头 -->
 	<div class="page-header navDiv">
 	  	<h1>宿舍管理系统</h1>
+	  	<span class="showUser"><a href="../" id="exit"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 退出</a></span>
 		<ul class="nav nav-tabs" role="tablist">
 		  <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
 		  	data-toggle="tab">首页</a></li>
-		  <li role="presentation"><a href="#applyLodging" aria-controls="applyLodging" role="tab" data-toggle="tab">住宿申请</a></li>
 		  <li role="presentation"><a href="#allNotices" aria-controls="allNotices" role="tab" data-toggle="tab">通知公告</a></li>
-		  <li role="presentation"><a href="#fix" aria-controls="fix" role="tab" data-toggle="tab">报修</a></li>
+<!-- 		  <li role="presentation"><a href="#applyLodging" aria-controls="applyLodging" role="tab" data-toggle="tab">下载专区</a></li>
+ -->		  <li role="presentation"><a href="#fix" aria-controls="fix" role="tab" data-toggle="tab">报修</a></li>
 		  <li role="presentation"><a href="#myWork" aria-controls="myWork" role="tab" data-toggle="tab">业务进度</a></li>
 		</ul>
 	</div>
@@ -35,49 +36,49 @@
 		  <div class="panel-body">
 		  	<div class="flex-div">
 		  		<div class="carouselContainer">
-				<div id="carousel-example-generic" class="carousel slide carousel-example-generic" data-ride="carousel">
-				  <!-- Indicators -->
-				  <ol class="carousel-indicators">
-				    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-				    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-				    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-				  </ol>
+					<div id="carousel-example-generic" class="carousel slide carousel-example-generic" data-ride="carousel">
+					  <!-- Indicators -->
+					  <ol class="carousel-indicators">
+					    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+					    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+					    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+					  </ol>
 
-				  <!-- Wrapper for slides -->
-				  <div class="carousel-inner" role="listbox">
-				    <div class="item active">
-				      <img src="../public/img/show1.jpg" alt="First Slide">
-				      <div class="carousel-caption">
-				        <h3></h3>
-				        <p></p>
-				      </div>
-				    </div>
-				    <div class="item">
-				      <img src="../public/img/show2.jpg" alt="Second Slide">
-				      <div class="carousel-caption">
-				        <h3></h3>
-				        <p></p>
-				      </div>
-				    </div>
-				    <div class="item">
-				      <img src="../public/img/show3.jpg" alt="Third Slide">
-				      <div class="carousel-caption">
-				        <h3></h3>
-				        <p></p>
-				      </div>
-				    </div>
-				  </div>
+					  <!-- Wrapper for slides -->
+					  <div class="carousel-inner" role="listbox">
+					    <div class="item active">
+					      <img src="../public/img/show1.jpg" alt="First Slide">
+					      <div class="carousel-caption">
+					        <h3></h3>
+					        <p></p>
+					      </div>
+					    </div>
+					    <div class="item">
+					      <img src="../public/img/show2.jpg" alt="Second Slide">
+					      <div class="carousel-caption">
+					        <h3></h3>
+					        <p></p>
+					      </div>
+					    </div>
+					    <div class="item">
+					      <img src="../public/img/show3.jpg" alt="Third Slide">
+					      <div class="carousel-caption">
+					        <h3></h3>
+					        <p></p>
+					      </div>
+					    </div>
+					  </div>
 
-				  <!-- Controls -->
-				  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-				    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-				    <span class="sr-only">Previous</span>
-				  </a>
-				  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-				    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-				    <span class="sr-only">Next</span>
-				  </a>
-				</div> 
+					  <!-- Controls -->
+					  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+					    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					    <span class="sr-only">Previous</span>
+					  </a>
+					  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+					    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					    <span class="sr-only">Next</span>
+					  </a>
+					</div> 
 				</div>
 				<div class="noticeContainer">
 					<div id="noticeList" class="noticeList">
@@ -97,6 +98,8 @@
 
 		<!-- 通知内容页返回去首页的按钮 -->
 		<h4 class="panel-title newHeading"><a href="#" id="return">&lt;返回</a></h4>
+		<!-- 返回去全部的按钮 -->
+		<h4 class="panel-title newHead"><a href="#" id="returnAll">&lt;返回</a></h4>
 		<!-- 显示具体通知的panel-body -->
 		<div id="showNotice">
 			<div>
@@ -115,16 +118,19 @@
 			</div>	
 		</div>
 
-		<!-- 显示具体通知返回去全部通知的按钮 -->
-		<h4 class="panel-title moreHeading"><a href="#" id="returnMore">&lt;返回</a></h4>
-		<!-- 显示全部通知的panel-body -->
-		<div id="showAllNotices">
-			<ul>
-				<li><a href="#" class="notice"></a><span class="time"></span></li>
-			</ul>
+		<!-- 历史通知及公告 -->
+		<div id="allNotices" class="tab-pane" role="tabpanel">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">历史通知公告</h4>
+				</div>
+				<div class="panel-body">
+					<div class="listContainer">
+						<ul></ul>
+					</div>
+				</div>
+			</div>
 		</div>
-
-
 
 		<!-- 宿舍申请标签页 -->
 		<div id="applyLodging" class="tab-pane" role="tabpanel">
@@ -195,17 +201,7 @@
 			  </form>
 			</div>
 		</div>
-		<!-- 历史通知及公告 -->
-		<div id="allNotices" class="tab-pane" role="tabpanel">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4 class="panel-title">历史通知公告</h4>
-				</div>
-				<div class="panel-body">
-					<ul></ul>
-				</div>
-			</div>
-		</div>
+		
 		<!-- 报修 -->
 		<div id="fix" class="tab-pane" role="tabpanel">
 			<div class="panel panel-default">

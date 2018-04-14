@@ -13,6 +13,30 @@
 		$(this).tab("show");
 	});
 
+
+	//取得cookie信息
+	$.ajax(
+	{
+		type: "get",
+		url: "api/getUsername",
+		dataType: "json",
+		success: function(result)
+		{
+			//渲染
+			$(".showUser").prepend("欢迎你，"+result.username);
+		},
+		error: function(err)
+		{
+			console.log(err);
+		}
+	});
+
+
+
+
+
+
+
 	initTable();
 
 	// 我的业务进度表格

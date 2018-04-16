@@ -116,45 +116,46 @@ router.post('/user/login',function (req,res) {
                 username: doc.username
             }));
             res.json(responseData);
-            return
+            return;
         }
         responseData.code = 2;
         responseData.message = '用户名和密码不存在';
         res.json(responseData);
-        return
+        return;
     });
 });
 
 
 
-
-
-//取通知
-router.get("/getNotice", function(req, res, next)
+//取全部通知
+router.get("/getAllNotices", function(req, res, next)
 {
-    // console.log("收到前端发来的取通知请求。");
-    Release.find({}, null, {limit: 5}, function(err, docs)
+    Release.find({}, null, {sort: {"time": -1}}, function(err, docs)
     {
-        if(docs)
+        if(docs != "" && docs != null)
         {
-            // console.log("已有的通知：")
-            // console.log(docs);
-
-            responseData.code = 4;
-            responseData.message = "成功取到通知";
-            responseData.data = docs;   //注意这里是一个对象数组，因为不止一条数据（一个对象
+            responseData.code = 4;      //成功
+            responseData.message = "取到全部通知";
+            responseData.data = docs;   //这是一个数组
             res.json(responseData);
             return;
         }
-        else if(err)
+        if(docs == "" || docs == null)
         {
-            console.log(err);
+            responseData.code = 2;
+            responseData.message = "没有通知";
+            res.json(responseData);
+            return;
+        }
+        if(err)
+        {
+            responseData.code = 5;
+            responseData.message = "服务器内部错误";
+            res.json(responseData);
+            return;
         }
     });
 });
-
-
-
 
 
 
@@ -259,7 +260,8 @@ router.post("/studentRole/fixForm", function(req, res, next)
                 remark: remark,
                 room: room,
                 spareDay: spareDay,
-                spareTime: spareTime
+                spareTime: spareTime,
+                status: "未处理"
             });
             fix.save();
 
@@ -287,38 +289,38 @@ router.post("/studentRole/myProgress", function(req, res, next)
     var result = {"total": 0, "rows": []};    
 
     //取学号去数据库匹配申请记录
-    Apply.findOne({sid: userInfo.username}, function(err, docs)
-    {
-        if(!err)
-        {
-            if(docs != "" && docs != null)
-            {
-                // console.log("数据库匹配到的申请记录：（业务进度）");
-                // console.log(docs);
-                result.rows.push({id: docs.sid, name: docs.name, dormitory: docs.dormitory, room: docs.room, item: "申请入住"});
-                result.total = result.rows.length;
+    // Apply.findOne({sid: userInfo.username}, function(err, docs)
+    // {
+    //     if(!err)
+    //     {
+    //         if(docs != "" && docs != null)
+    //         {
+    //             // console.log("数据库匹配到的申请记录：（业务进度）");
+    //             // console.log(docs);
+    //             result.rows.push({id: docs.sid, name: docs.name, dormitory: docs.dormitory, room: docs.room, item: "申请入住"});
+    //             result.total = result.rows.length;
 
-            }//end-if
-            else if(docs == null || doc == "")
-            {
-                responseData.code = 2;
-                responseData.message = '没有该用户的操作记录';
-                res.json(responseData);
-                return;
-            }//end-elseif
+    //         }//end-if
+    //         else if(docs == null || doc == "")
+    //         {
+    //             responseData.code = 2;
+    //             responseData.message = '没有该用户的操作记录';
+    //             res.json(responseData);
+    //             return;
+    //         }//end-elseif
 
-        }//end-if(!err)
-        else
-        {
-            responseData.code = 5;
-            responseData.message = err;
-            res.json(responseData);
-            return;
-        }//end-else
-    });//end-Apply.findOne
+    //     }//end-if(!err)
+    //     else
+    //     {
+    //         responseData.code = 5;
+    //         responseData.message = err;
+    //         res.json(responseData);
+    //         return;
+    //     }//end-else
+    // });//end-Apply.findOne
 
     //取学号去数据库匹配报修记录
-    Fix.find({id: userInfo.username}, function(err, doc)
+    Fix.find({id: userInfo.username, status: "未处理"}, function(err, doc)
     {
         if(!err)
         {
@@ -328,8 +330,18 @@ router.post("/studentRole/myProgress", function(req, res, next)
                 // console.log(doc);
                 for(let i = 0; i < doc.length; i ++)
                 {
-                    result.rows.push({id: doc[i].id, name: doc[i].name, dormitory: doc[i].building, room: doc[i].room,
-                                        spareDay: doc[i].spareDay, spareTime: doc[i].spareTime, item: "报修" });
+                    let data = {};
+                    if(doc[i].status == "已处理") 
+                    {
+                        data = {id: doc[i].id, name: doc[i].name, dormitory: doc[i].building, room: doc[i].room,
+                                        spareDay: doc[i].spareDay, spareTime: doc[i].spareTime, item: "报修", operation: "已处理"};
+                    }
+                    else
+                    {
+                        data = {id: doc[i].id, name: doc[i].name, dormitory: doc[i].building, room: doc[i].room,
+                                        spareDay: doc[i].spareDay, spareTime: doc[i].spareTime, item: "报修"};
+                    }
+                    result.rows.push(data);
                 }
                 //更新total的值
                 result.total = result.rows.length;
@@ -466,10 +478,62 @@ router.post("/done", function(req, res, next)
     console.log("收到前台的完成确认");
     console.log(req.body);
     //匹配数据库相应记录，然后设置status字段为"已处理"
+    if(req.body.item == "报修")
+    {
+        Fix.findOne({id: req.body.id, spareDay: req.body.spareDay, spareTime: req.body.spareTime}, function(err, doc)
+        {
+            if(doc != "" && doc != null)
+            {
+                Fix.update({id: req.body.id, spareDay: req.body.spareDay, spareTime: req.body.spareTime}, 
+                            {"$set": {"status": "已处理"}}, function(err)
+                            {
+                                if(!err)
+                                {
+                                    responseData.code = 4;
+                                    responseData.message = "成功设置为已处理";
+                                    res.json(responseData);
+                                    return;
+                                }
+                                else
+                                {
+                                    responseData.code = 5;
+                                    responseData.message = err;
+                                    return;
+                                }
+                            });
+            }
+            else
+            {
+                responseData.code = 2;
+                responseData.message = "没有该用户的报修记录";
+                res.json(responseData);
+                return;
+            }
+            if(err)
+            {
+                responseData.code = 5;
+                responseData.message = err;
+                return;
+            }
+        });
+    }
 
-    //如果成功设置
-    responseData.message = "成功设置为已处理";
-    res.json(responseData);
+    if(req.body.item == "申请入住")
+    {
+        //返回
+        responseData.code = 2;
+        responseData.message = "";
+        res.json(responseData);
+    }
+
+});
+
+
+
+router.get("/getUsername", function(req, res, next)
+{
+    var userInfo = JSON.parse(req.cookies.get('userInfo'));
+    res.json(userInfo);
     return;
 });
 

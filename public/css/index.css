@@ -1,0 +1,55 @@
+        body{
+            background: url("../public/img/bg.jpg") repeat;
+        }
+        .login-register{
+            height:auto;
+            width: 400px;
+            margin: 82px auto;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+        .tab-wrap{
+            display: block;
+            margin: 0 20px 20px;
+            width: 360px;
+            height:auto;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+        }
+
+        .tab-wrap ul{
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+        .tab-wrap li{
+            float: left;
+            width: 180px;
+        }
+        .tab-wrap li a.btn{
+            display:block;
+            width: 180px;
+            padding: 20px 16px;
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+        .btn-l{
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        .btn-r{
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .tab-wrap>div{
+            width: 360px;
+        }
+        .input-group{
+            margin: 0 auto 25px;
+        }
+        .form-control{
+            padding: 20px 12px;
+            font-size: 18px;
+        }
+        button.btn{
+            padding: 6px 70px;
+        }

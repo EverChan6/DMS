@@ -9,6 +9,8 @@ module.exports = new mongoose.Schema({
     // 用户名
     username: {type: String, unique: true},
     // 密码
-    password:String
+    password:String,
+
+    role: String
 
 })

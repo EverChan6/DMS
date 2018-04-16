@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-// console.log(express);
-// console.log(router.get);
+
+//localhost:8089/admin/user
 router.get('/user',function (req,res,next) {
     res.send('Admin-User');
 });

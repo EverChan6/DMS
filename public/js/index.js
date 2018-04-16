@@ -44,39 +44,44 @@ $(function () {
     });
     // 提交登录
     loginBox.find('.login-btn').on('click',function () {
+
+        var role = $("#role input[name='role']:checked").val();
+        console.log(role);
+
         $.ajax({
             type:'POST',
             url:'api/user/login',
             data:{
                 username:loginBox.find('[name="username"]').val(),
-                password:loginBox.find('[name="password"]').val()
+                password:loginBox.find('[name="password"]').val(),
+                role: role
             },
             dataType:'json',
             success:function (result) {
 
-                var role = $("#Role input[name='Role']:checked").val();
-                console.log(role);
-                console.log(role == "管理员");
-                alert(result.message);
-                // 登录成功
-
-                if(role == "学生")
-                {
-                    console.log("角色是："+loginBox.find('[name="Role"]').val());
-                    window.location.href = './studentRole';
-                }
-                else if(role == "管理员")
-                {
-                    window.location.href = './managerRole';
-                }
-
                 if(result.code == 4){
+
+                    alert(result.message);
+                    // 登录成功
+
+                    if(role == "学生")
+                    {
+                        window.location.href = './studentRole';
+                    }
+                    else if(role == "管理员")
+                    {
+                        window.location.href = './managerRole';
+                    }
+
+
                     loginBox.find('input').each(function () {
                         $(this).val('');
                     });
                     
-
-
+                }
+                else if(result.code == 2)
+                {
+                    alert("请检查您的登陆角色。");
                 }
             }
         })

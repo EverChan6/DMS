@@ -6,6 +6,7 @@ mongoose.Promise = global.Promise;
 var Release = require("../Models/Release");
 var StayInfo = require("../Models/StayInfo");
 var Visit = require("../Models/Visit");
+var Fix = require("../Models/Fix");
 
 
 
@@ -165,6 +166,7 @@ router.post("/search", function(req, res, next)
 		params = {};
 	}
 
+	//去掉空值
 	if(params.id == "")delete params.id;
 	if(params.name == "")delete params.name;
 	if(params.sex == "")delete params.sex;
@@ -256,6 +258,7 @@ router.post("/add", function(req, res, next)
 });
 
 
+//修改住宿信息
 router.post("/edit", function(req, res, next)
 {
 	var responseData = {
@@ -287,6 +290,7 @@ router.post("/edit", function(req, res, next)
 });
 
 
+//删除住宿信息
 router.post("/delete", function(req, res, next)
 {
 	var responseData = {
@@ -310,6 +314,53 @@ router.post("/delete", function(req, res, next)
 		}
 	});
 
+});
+
+
+//查看报修申请
+router.post("/handle", function(req, res, next)
+{
+	console.log("收到查询报修的请求");
+	console.log(req.body);
+	Fix.find({"status": "未处理"}, function(err, doc)	//只查找未处理的报修
+	{
+		let result = {"total": 0, "rows": []};
+		if(doc != "" && doc != null)
+		{
+			for(let i = 0; i < doc.length; i ++)
+			{
+				result.rows.push({id: doc[i].id, name: doc[i].name, building: doc[i].building,
+									room: doc[i].room, item: doc[i].item, details: doc[i].details,
+									phone: doc[i].phone, spareDay: doc[i].spareDay, spareTime: doc[i].spareTime, remark: doc[i].remark});
+			}
+			//更新数据条数
+			result.total = result.rows.length;
+			res.json(result);
+			return;
+		}
+		if(err)	
+		{
+			console.log("无法查询报修记录");
+			res.json(result);
+			return;
+		}
+		if(doc == "" || doc == null)
+		{
+			console.log("没有查到一条报修记录");
+			res.json(result);
+			return;
+		}
+
+	});
+
+});
+
+
+router.get("/getUsername", function(req, res, next)
+{
+	var userInfo = JSON.parse(req.cookies.get('userInfo'));
+    res.json(userInfo);
+    return;
 });
 
 

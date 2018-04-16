@@ -11,5 +11,6 @@ module.exports = new mongoose.Schema({
 	remark: String,
 	room: String,
 	spareDay: String,
-	spareTime: String
+	spareTime: String,
+	status: {type: String, in: ["已处理", "未处理"]}
 });

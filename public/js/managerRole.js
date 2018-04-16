@@ -632,7 +632,7 @@
 		}],
 		onLoadSuccess: function(result)
 		{
-			console.log("成功加载报修信息");
+			console.log("报修信息加载成功");
 		},
 		onLoadError: function(error)
 		{

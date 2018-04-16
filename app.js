@@ -1,4 +1,5 @@
 // 应用程序的启动入口文件
+
 // 加载express模块
 var express = require('express');
 // 加载模板处理模块
@@ -6,9 +7,9 @@ var swig = require('swig');
 // 加载数据库模块
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-// 处理前端提交过来的数据
+// node.js 中间件，用于处理 JSON, Raw, Text 和 URL 编码的数据。处理前端提交过来的数据
 var bodyParser = require('body-parser');
-//加载cookies模块
+// 加载cookies模块
 var Cookies = require('cookies');
 // 创建app应用 => NodeJs
 var app = express().listen()._events.request;
@@ -49,7 +50,7 @@ app.use( function (req,res,next) {
     // 解析登录用户的cookies信息
     if(req.cookies.get('userInfo')){
         try{
-            req.userInfo = JSON.parse(req.cookies.get('userInfo'))
+            req.userInfo = JSON.parse(req.cookies.get('userInfo'));
         }catch(e){
             next();
         }
@@ -57,9 +58,8 @@ app.use( function (req,res,next) {
     next();
 });
 
-//app.get(path,function(){})
+//模式：app.get(path,function(){})
 app.get('/',function(req, res) {
-    // res.send('<h1>欢迎光临我的博客！</h1>');
     // 第一个参数：表示模板文件，相对于view文件夹而言的index文件
     // 第二个参数:传递个模板使用的数据，如res.render('index.ejs',{title: '网页标题'})
     res.render('index');
@@ -69,6 +69,11 @@ app.get('/',function(req, res) {
 // 学生角色
 app.get('/studentRole', function(req, res, next)
 {
+	// console.log(req.cookies.get('userInfo'));
+	if(!req.cookies.get('userInfo'))
+	{
+		res.redirect('index');
+	}
     res.render('studentRole');
 });
 
@@ -77,6 +82,11 @@ app.get('/studentRole', function(req, res, next)
 // 宿管角色
 app.get('/managerRole', function(req, res, next)
 {
+	// console.log(req.cookies.get('userInfo'));
+	if(!req.cookies.get('userInfo'))
+	{
+		res.redirect('index');
+	}
 	res.render('managerRole');
 });
 
@@ -97,6 +107,6 @@ mongoose.connect('mongodb://localhost:27017/blog',{useMongoClient:true},function
         console.log('数据库连接成功');
         app.listen(port);
         console.log('> Listening at ' + uri + '\n');
-        opn(uri)
+        opn(uri);
     }
 });

@@ -9,7 +9,7 @@
   
 ## 本地开发 ##
 
-	mongoDB官网下载地址:https://www.mongodb.com/							   // 安装mongoDB数据库
+	mongoDB官网下载地址:https://www.mongodb.com/							// 安装mongoDB数据库
 	cd MongoDB\Server\3.4\bin\mongod --dbpath=Node-express-mongoose-Blog/db --port=27017		// 进入Mongodb 启动Mongodb服务端
 	npm start											// 开启服务器，浏览器访问 			http://localhost:8089  
 
